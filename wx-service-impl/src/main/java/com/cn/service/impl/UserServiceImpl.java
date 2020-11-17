@@ -2,7 +2,7 @@ package com.cn.service.impl;
 
 
 import com.alibaba.fastjson.JSON;
-import com.cn.beans.User;
+import com.cn.beans.wx.User;
 import com.cn.dao.UserMapper;
 import com.cn.service.UserService;
 import com.cn.service.config.DataType;

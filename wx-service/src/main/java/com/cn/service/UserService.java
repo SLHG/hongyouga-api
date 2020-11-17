@@ -1,7 +1,7 @@
 package com.cn.service;
 
 
-import com.cn.beans.User;
+import com.cn.beans.wx.User;
 import com.github.pagehelper.PageInfo;
 
 public interface UserService {

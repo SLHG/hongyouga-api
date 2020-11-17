@@ -1,7 +1,7 @@
 package com.cn.dao;
 
 
-import com.cn.beans.User;
+import com.cn.beans.wx.User;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cn.beans;
+package com.cn.beans.wx;
 
 import java.io.Serializable;
 

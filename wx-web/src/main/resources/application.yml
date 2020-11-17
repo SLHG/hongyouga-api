@@ -46,4 +46,14 @@ datasource-slave:
   driver-class-name: @datasource-slave.driver-class-name@
   filters: @datasource-slave.filters@
   filter-connectProperties: config.decrypt=@datasource-slave.druid.config.decrypt@;config.decrypt.key=@datasource-slave.druid.connection-properties.publicKey@
+#微信配置
+wx:
+  token:
+    url: @wx.token.url@
+    secret: @wx.token.secret@
+  app:
+    id: @wx.app.id@
+  ticket:
+    url: @wx.ticket.url@
+
 
