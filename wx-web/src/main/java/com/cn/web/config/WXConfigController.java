@@ -98,7 +98,7 @@ public class WXConfigController {
     public String acceptWXMessage(String signature, String timestamp, String nonce, String echostr, HttpServletRequest request) {
         LOGGER.info("url:" + request.getRequestURI());
         LOGGER.info("signature:" + signature + "--timestamp:" + timestamp + "--nonce:" + nonce + "--echostr:" + echostr);
-        return signature;
+        return echostr;
     }
 
     /**
