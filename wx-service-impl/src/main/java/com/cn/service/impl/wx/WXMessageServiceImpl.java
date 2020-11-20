@@ -26,7 +26,7 @@ public class WXMessageServiceImpl implements WXMessageService {
             messageInfo.setMsgType(WXConstant.MSG_TYPE_TEXT);
             if (!StringUtils.isBlank(content)) {
                 if (content.contains("约课")) {
-                    messageInfo.setContent("<a href='http://www.shazhibin.top/service/appointment.html?openId=" + messageInfo.getFromUserName() + "'>约课</a>");
+                    messageInfo.setContent("<a href='http://www.shazhibin.top/service/appointment.html?openId=" + messageInfo.getToUserName() + "'>约课</a>");
                     return messageParseXml(messageInfo);
                 }
             }
@@ -64,7 +64,7 @@ public class WXMessageServiceImpl implements WXMessageService {
     }
 
     /**
-     * 构建图片类型回复消息xml
+     * 构建图片类型,语音类型回复消息xml
      *
      * @param root        xml根节点
      * @param messageInfo 消息实体类信息
