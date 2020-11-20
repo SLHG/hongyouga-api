@@ -3,6 +3,7 @@ package com.cn.web.config;
 import com.alibaba.fastjson.JSON;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.wx.WXConfig;
+import com.cn.beans.wx.WXOauthToken;
 import com.cn.beans.wx.WXTicket;
 import com.cn.service.token.AccessTokenService;
 import com.cn.service.utils.HttpUtils;
@@ -33,8 +34,14 @@ public class WXConfigController {
     @Value("${wx.app.id}")
     private String appId;
 
-    @Value("${wx.ticket.url}")
+    @Value("${wx.url.ticket}")
     private String ticketUrl;
+
+    @Value("${wx.url.oauth-token}")
+    private String oauthTokenUrl;
+
+    @Value("${wx.app.secret}")
+    private String secret;
 
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
@@ -57,8 +64,32 @@ public class WXConfigController {
         String signature = DigestUtils.sha1Hex(sha);
         WXConfig wxConfig = new WXConfig(appId, String.valueOf(timestamp), nonceStr, signature);
         resultBean.setResult(wxConfig);
-        resultBean.setRtnCode(ResultBean.SUCCESS_CODE);
-        resultBean.setRtnMsg(ResultBean.SUCCESS_MSG);
+        return resultBean;
+    }
+
+    @GetMapping("/getAppId")
+    public ResultBean getAppId() {
+        ResultBean resultBean = new ResultBean();
+        resultBean.setResult(appId);
+        return resultBean;
+    }
+
+    @GetMapping("/userAuthorize")
+    public ResultBean userAuthorize(String code) {
+        List<NameValuePair> list = new ArrayList<>();
+        list.add(new BasicNameValuePair("appid", appId));
+        list.add(new BasicNameValuePair("secret", secret));
+        list.add(new BasicNameValuePair("code", code));
+        list.add(new BasicNameValuePair("grant_type", "authorization_code"));
+        String oauthTokenStr = HttpUtils.httpGet(oauthTokenUrl, list);
+        ResultBean resultBean = new ResultBean();
+        if (StringUtils.isBlank(oauthTokenStr)) {
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            resultBean.setRtnMsg(ResultBean.FAIL_MSG);
+            return resultBean;
+        }
+        WXOauthToken wxOauthToken = JSON.parseObject(oauthTokenStr, WXOauthToken.class);
+        resultBean.setResult(wxOauthToken.getOpenid());
         return resultBean;
     }
 

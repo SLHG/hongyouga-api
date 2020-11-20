@@ -7,8 +7,8 @@ public class ResultBean {
     public static final String FAIL_CODE = "-9999";
     public static final String SUCCESS_MSG = "成功";
     public static final String FAIL_MSG = "失败";
-    private String rtnCode;
-    private String rtnMsg;
+    private String rtnCode = SUCCESS_CODE;
+    private String rtnMsg = SUCCESS_MSG;
     private Object result;
     private List<Object> resultList;
 

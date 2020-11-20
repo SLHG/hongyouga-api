@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name: @control-spring.application.name@
+  jackson:
+    default-property-inclusion: non_null
   #redis连接配置
   redis:
     cluster:
@@ -48,12 +50,12 @@ datasource-slave:
   filter-connectProperties: config.decrypt=@datasource-slave.druid.config.decrypt@;config.decrypt.key=@datasource-slave.druid.connection-properties.publicKey@
 #微信配置
 wx:
-  token:
-    url: @wx.token.url@
-    secret: @wx.token.secret@
+  url:
+    access-token: @wx.url.access-token@
+    ticket: @wx.url.ticket@
+    oauth-token: @wx.url.oauth-token@
   app:
     id: @wx.app.id@
-  ticket:
-    url: @wx.ticket.url@
+    secret: @wx.app.secret@
 
 

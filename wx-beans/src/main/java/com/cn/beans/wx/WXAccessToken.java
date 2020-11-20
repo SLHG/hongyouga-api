@@ -1,6 +1,9 @@
 package com.cn.beans.wx;
 
-public class Token {
+/**
+ * 微信公众号进行基础操作的临时票据
+ */
+public class WXAccessToken {
 
     private String access_token;
     private String expires_in;

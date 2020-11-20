@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.appointment.AppointmentInfoDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.appointment.AppointmentInfo">
+        <id column="appointment_id" property="appointmentId" jdbcType="INTEGER"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="class_id" property="classId" jdbcType="INTEGER"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+        <result column="teacher_name" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="limit_num" property="limitNum" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getAppointmentList" resultMap="BaseResultMap" parameterType="map">
+        select * from appointment_info;
+    </select>
+
+</mapper>

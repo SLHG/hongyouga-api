@@ -1,7 +1,7 @@
 package com.cn.service.impl.token;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.beans.wx.Token;
+import com.cn.beans.wx.WXAccessToken;
 import com.cn.service.token.AccessTokenService;
 import com.cn.service.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -26,11 +26,11 @@ public class AccessTokenServiceImpl implements AccessTokenService {
 
     private static final Logger LOGGER = Logger.getLogger(AccessTokenServiceImpl.class);
 
-    @Value("${wx.token.url}")
+    @Value("${wx.url.access-token}")
     private String tokenUrl;
     @Value("${wx.app.id}")
     private String appId;
-    @Value("${wx.token.secret}")
+    @Value("${wx.app.secret}")
     private String secret;
 
     private static final String GRANT_TYPE = "client_credential";
@@ -62,7 +62,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
             LOGGER.error("initAccessToken=>获取AccessToken失败:" + tokenStr);
             return "";
         }
-        Token token = JSON.parseObject(tokenStr, Token.class);
+        WXAccessToken token = JSON.parseObject(tokenStr, WXAccessToken.class);
         String accessToken = token.getAccess_token();
         if (StringUtils.isEmpty(accessToken)) {
             LOGGER.error("initAccessToken=>获取AccessToken失败:" + tokenStr);
