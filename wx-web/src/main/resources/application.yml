@@ -53,7 +53,6 @@ wx:
   url:
     access-token: @wx.url.access-token@
     ticket: @wx.url.ticket@
-    oauth-token: @wx.url.oauth-token@
   app:
     id: @wx.app.id@
     secret: @wx.app.secret@

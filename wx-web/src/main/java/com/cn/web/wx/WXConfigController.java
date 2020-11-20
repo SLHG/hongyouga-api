@@ -1,9 +1,8 @@
-package com.cn.web.config;
+package com.cn.web.wx;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.beans.common.ResultBean;
 import com.cn.beans.wx.WXConfig;
-import com.cn.beans.wx.WXOauthToken;
 import com.cn.beans.wx.WXTicket;
 import com.cn.service.token.AccessTokenService;
 import com.cn.service.utils.HttpUtils;
@@ -12,21 +11,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
+/**
+ * 微信配置信息获取
+ */
 @RestController
 @RequestMapping("/config")
 public class WXConfigController {
@@ -40,12 +38,6 @@ public class WXConfigController {
 
     @Value("${wx.url.ticket}")
     private String ticketUrl;
-
-    @Value("${wx.url.oauth-token}")
-    private String oauthTokenUrl;
-
-    @Value("${wx.app.secret}")
-    private String secret;
 
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
@@ -76,66 +68,6 @@ public class WXConfigController {
         ResultBean resultBean = new ResultBean();
         resultBean.setResult(appId);
         return resultBean;
-    }
-
-    @GetMapping("/userAuthorize")
-    public ResultBean userAuthorize(String code) {
-        List<NameValuePair> list = new ArrayList<>();
-        list.add(new BasicNameValuePair("appid", appId));
-        list.add(new BasicNameValuePair("secret", secret));
-        list.add(new BasicNameValuePair("code", code));
-        list.add(new BasicNameValuePair("grant_type", "authorization_code"));
-        String oauthTokenStr = HttpUtils.httpGet(oauthTokenUrl, list);
-        ResultBean resultBean = new ResultBean();
-        if (StringUtils.isBlank(oauthTokenStr)) {
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            resultBean.setRtnMsg(ResultBean.FAIL_MSG);
-            return resultBean;
-        }
-        WXOauthToken wxOauthToken = JSON.parseObject(oauthTokenStr, WXOauthToken.class);
-        resultBean.setResult(wxOauthToken.getOpenid());
-        return resultBean;
-    }
-
-    @GetMapping("/acceptWXMessage")
-    public String checkWXMessage(String signature, String timestamp, String nonce, String echostr) {
-        LOGGER.info("checkWXMessage=>get接收消息" + echostr);
-        return echostr;
-    }
-
-    @PostMapping("/acceptWXMessage")
-    public String acceptWXMessage(HttpServletRequest request) {
-        Map<String, String> parseXml = requestParseXml(request);
-        LOGGER.info("acceptWXMessage=>" + JSON.toJSONString(parseXml));
-        return "";
-    }
-
-    public static Map<String, String> requestParseXml(HttpServletRequest request) {
-        // 将解析结果存储在HashMap中
-        Map<String, String> map = new HashMap<>();
-        // 读取输入流
-        SAXReader reader = new SAXReader();
-        Element root;
-        InputStream inputStream;
-        try {
-            // 从request中取得输入流
-            inputStream = request.getInputStream();
-            Document document = reader.read(inputStream);
-            // 得到xml根元素
-            root = document.getRootElement();
-        } catch (Exception e) {
-            LOGGER.error("requestParseXml=>读取微信消息错误", e);
-            return map;
-        }
-        // 得到根元素的所有子节点
-        List<?> elements = root.elements();
-        for (Object element : elements) {
-            if (element instanceof Element) {
-                Element e = (Element) element;
-                map.put(e.getName(), e.getText());
-            }
-        }
-        return map;
     }
 
     /**
