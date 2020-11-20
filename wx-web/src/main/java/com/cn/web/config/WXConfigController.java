@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +92,13 @@ public class WXConfigController {
         WXOauthToken wxOauthToken = JSON.parseObject(oauthTokenStr, WXOauthToken.class);
         resultBean.setResult(wxOauthToken.getOpenid());
         return resultBean;
+    }
+
+    @GetMapping("/acceptWXMessage")
+    public String acceptWXMessage(String signature, String timestamp, String nonce, String echostr, HttpServletRequest request) {
+        LOGGER.info("url:" + request.getRequestURI());
+        LOGGER.info("signature:" + signature + "--timestamp:" + timestamp + "--nonce:" + nonce + "--echostr:" + echostr);
+        return signature;
     }
 
     /**
