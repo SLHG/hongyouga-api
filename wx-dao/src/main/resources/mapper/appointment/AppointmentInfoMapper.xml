@@ -6,13 +6,17 @@
         <result column="class_name" property="className" jdbcType="VARCHAR"/>
         <result column="class_id" property="classId" jdbcType="INTEGER"/>
         <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
         <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
         <result column="teacher_name" property="teacherName" jdbcType="VARCHAR"/>
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
         <result column="limit_num" property="limitNum" jdbcType="INTEGER"/>
     </resultMap>
     <select id="getAppointmentList" resultMap="BaseResultMap" parameterType="map">
-        select * from appointment_info;
+        select *
+        from appointment_info
+        where start_time &gt; #{startDate}
+          and end_time &lt; #{endDate};
     </select>
 
 </mapper>

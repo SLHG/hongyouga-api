@@ -1,7 +1,7 @@
 $(
     function () {
         var dayNum = 5;
-        $.get("/service/class/getClassList", {
+        $.get("/service/appointment/getAppointmentList", {
             "startDate": getFormatDate(0), "dayNum": dayNum
         }, function (data) {
             for (let i = 0; i <= dayNum; i++) {
@@ -12,9 +12,9 @@ $(
                 for (let j = 0; j < resultElement.length; j++) {
                     let tr = $("#table tr:eq(" + (j + 1) + ")");
                     if (tr.length > 0) {
-                        tr.append("<td>" + resultElement[j].name + "</td>");
+                        tr.append("<td>" + resultElement[j].className + "</td>");
                     } else {
-                        $("#table").append("<tr><td>" + resultElement[j].name + "</td></tr>");
+                        $("#table").append("<tr><td>" + resultElement[j].className + "</td></tr>");
                     }
                 }
             }
