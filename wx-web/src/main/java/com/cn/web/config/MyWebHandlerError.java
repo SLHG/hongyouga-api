@@ -1,5 +1,6 @@
 package com.cn.web.config;
 
+import com.cn.beans.common.ResultBean;
 import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,9 +15,10 @@ public class MyWebHandlerError implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
-        LOGGER.error("系统报错", e);
+        LOGGER.error(httpServletRequest.getRequestURI() + "=>系统报错:", e);
         ModelAndView error = new ModelAndView(new MappingJackson2JsonView());
-        error.addObject("message", "系统出错");
+        error.addObject("rtnCode", ResultBean.FAIL_CODE);
+        error.addObject("rtnMsg", ResultBean.FAIL_MSG);
         return error;
     }
 }
