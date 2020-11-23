@@ -72,10 +72,13 @@ public class WXMsgServiceImpl implements WXMsgService {
         switch (messageInfo.getResponseMsgType()) {
             case WXConstant.MSG_TYPE_TEXT:
                 root.addElement("Content").add(DocumentHelper.createCDATA(messageInfo.getContent()));
+                break;
             case WXConstant.MSG_TYPE_IMAGE:
                 setImageVoiceMessage(root, messageInfo, "Image");
+                break;
             case WXConstant.MSG_TYPE_VOICE:
                 setImageVoiceMessage(root, messageInfo, "Voice");
+                break;
             default:
                 root.addElement("Content").add(DocumentHelper.createCDATA("消息类型不支持"));
         }

@@ -8,11 +8,11 @@
         <result column="key_word" property="keyWord" jdbcType="VARCHAR"/>
         <result column="media_id" property="mediaId" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="searchWXResponseMsg" resultMap="BaseResultMap" parameterType="map">
+    <select id="searchWXResponseMsg" resultMap="BaseResultMap" parameterType="com.cn.beans.wx.WXMsgInfo">
         select response_msg_type, content, media_id
         from wx_msg_info
-        where request_msg_type = #{msgType}
-          and key_word like #{keyWord};
+        where request_msg_type = #{requestMsgType}
+          and key_word like CONCAT('%', #{keyWord}, '%');
     </select>
 
 </mapper>
