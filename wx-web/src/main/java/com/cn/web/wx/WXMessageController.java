@@ -1,7 +1,7 @@
 package com.cn.web.wx;
 
 import com.alibaba.fastjson.JSON;
-import com.cn.service.wx.WXMessageService;
+import com.cn.service.wx.WXMsgService;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -30,7 +30,7 @@ public class WXMessageController {
     private static final Logger LOGGER = Logger.getLogger(WXConfigController.class);
 
     @Autowired
-    WXMessageService wxMessageService;
+    WXMsgService wxMessageService;
 
 
     @GetMapping("/acceptWXMessage")

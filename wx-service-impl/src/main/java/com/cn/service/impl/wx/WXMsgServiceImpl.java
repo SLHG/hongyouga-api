@@ -1,40 +1,59 @@
 package com.cn.service.impl.wx;
 
 import com.cn.beans.wx.WXConstant;
-import com.cn.beans.wx.WXMessageInfo;
-import com.cn.service.wx.WXMessageService;
+import com.cn.beans.wx.WXMsgInfo;
+import com.cn.dao.wx.WXMsgDao;
+import com.cn.service.wx.WXMsgService;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
-public class WXMessageServiceImpl implements WXMessageService {
+public class WXMsgServiceImpl implements WXMsgService {
+
+    @Autowired
+    WXMsgDao wxMsgDao;
 
     @Override
     public String handleMessage(Map<String, String> messageMap) {
         String msgType = messageMap.get("MsgType");
-        WXMessageInfo messageInfo = new WXMessageInfo();
-        messageInfo.setToUserName(messageMap.get("FromUserName"));
-        messageInfo.setFromUserName(messageMap.get("ToUserName"));
-        messageInfo.setCreateTime(messageMap.get("CreateTime"));
+        //接收请求消息
+        WXMsgInfo requestMsgInfo = new WXMsgInfo();
+        requestMsgInfo.setRequestMsgType(msgType);
+        WXMsgInfo responseMsg;
         if (WXConstant.MSG_TYPE_TEXT.equals(msgType)) {
             String content = messageMap.get("Content");
-            messageInfo.setMsgType(WXConstant.MSG_TYPE_TEXT);
             if (!StringUtils.isBlank(content)) {
-                if (content.contains("约课")) {
-                    messageInfo.setContent("<a href='http://www.shazhibin.top/service/appointment.html?openId=" + messageInfo.getToUserName() + "'>约课</a>");
-                    return messageParseXml(messageInfo);
+                requestMsgInfo.setKeyWord(content);
+                WXMsgInfo searchResponseMsg = wxMsgDao.searchWXResponseMsg(requestMsgInfo);
+                if (searchResponseMsg != null) {
+                    responseMsg = searchResponseMsg;
+                } else {
+                    responseMsg = getDefaultResponseWXMsg();
                 }
+            } else {
+                responseMsg = getDefaultResponseWXMsg();
             }
+        } else {
+            responseMsg = getDefaultResponseWXMsg();
         }
-        messageInfo.setMsgType(WXConstant.MSG_TYPE_TEXT);
-        messageInfo.setContent("抱歉,还未设置此消息回复.");
-        return messageParseXml(messageInfo);
+        responseMsg.setToUserName(messageMap.get("FromUserName"));
+        responseMsg.setFromUserName(messageMap.get("ToUserName"));
+        responseMsg.setCreateTime(messageMap.get("CreateTime"));
+        return messageParseXml(responseMsg);
 
+    }
+
+    private WXMsgInfo getDefaultResponseWXMsg() {
+        WXMsgInfo responseMessage = new WXMsgInfo();
+        responseMessage.setResponseMsgType(WXConstant.MSG_TYPE_TEXT);
+        responseMessage.setContent("你好.");
+        return responseMessage;
     }
 
     /**
@@ -43,14 +62,14 @@ public class WXMessageServiceImpl implements WXMessageService {
      * @param messageInfo 回复消息实体类信息
      * @return 回复消息xml包
      */
-    private String messageParseXml(WXMessageInfo messageInfo) {
+    private String messageParseXml(WXMsgInfo messageInfo) {
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement("xml");
         root.addElement("ToUserName").add(DocumentHelper.createCDATA(messageInfo.getToUserName()));
         root.addElement("FromUserName").add(DocumentHelper.createCDATA(messageInfo.getFromUserName()));
         root.addElement("CreateTime").add(DocumentHelper.createText(messageInfo.getCreateTime()));
-        root.addElement("MsgType").add(DocumentHelper.createCDATA(messageInfo.getMsgType()));
-        switch (messageInfo.getMsgType()) {
+        root.addElement("MsgType").add(DocumentHelper.createCDATA(messageInfo.getResponseMsgType()));
+        switch (messageInfo.getResponseMsgType()) {
             case WXConstant.MSG_TYPE_TEXT:
                 root.addElement("Content").add(DocumentHelper.createCDATA(messageInfo.getContent()));
             case WXConstant.MSG_TYPE_IMAGE:
@@ -70,7 +89,7 @@ public class WXMessageServiceImpl implements WXMessageService {
      * @param messageInfo 消息实体类信息
      * @param type        节点key
      */
-    private void setImageVoiceMessage(Element root, WXMessageInfo messageInfo, String type) {
+    private void setImageVoiceMessage(Element root, WXMsgInfo messageInfo, String type) {
         Element image = root.addElement(type);
         image.addElement("MediaId").add(DocumentHelper.createCDATA(messageInfo.getMediaId()));
     }

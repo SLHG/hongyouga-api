@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.wx.WXMsgDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.wx.WXMsgInfo">
+        <result column="response_msg_type" property="responseMsgType" jdbcType="VARCHAR"/>
+        <result column="request_msg_type" property="requestMsgType" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="key_word" property="keyWord" jdbcType="VARCHAR"/>
+        <result column="media_id" property="mediaId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="searchWXResponseMsg" resultMap="BaseResultMap" parameterType="map">
+        select response_msg_type, content, media_id
+        from wx_msg_info
+        where request_msg_type = #{msgType}
+          and key_word like #{keyWord};
+    </select>
+
+</mapper>

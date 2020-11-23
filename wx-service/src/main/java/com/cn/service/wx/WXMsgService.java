@@ -2,6 +2,6 @@ package com.cn.service.wx;
 
 import java.util.Map;
 
-public interface WXMessageService {
+public interface WXMsgService {
     String handleMessage(Map<String, String> messageMap);
 }
