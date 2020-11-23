@@ -12,9 +12,9 @@ $(
                 for (let j = 0; j < resultElement.length; j++) {
                     let tr = $("#table tr:eq(" + (j + 1) + ")");
                     if (tr.length > 0) {
-                        tr.append("<td><a href='/service/classinfo.html?classId=" + resultElement[j].classId + "'>" + resultElement[j].className + "</a></td>");
+                        tr.append("<td><a href='/service/class_info.html?classId=" + resultElement[j].classId + "'>" + resultElement[j].className + "</a></td>");
                     } else {
-                        $("#table").append("<tr><td><a href='/service/classinfo.html?classId=" + resultElement[j].classId + "'>" + resultElement[j].className + "</a></td></tr>");
+                        $("#table").append("<tr><td><a href='/service/class_info.html?classId=" + resultElement[j].classId + "'>" + resultElement[j].className + "</a></td></tr>");
                     }
                 }
             }
