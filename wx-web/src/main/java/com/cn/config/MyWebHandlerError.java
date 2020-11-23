@@ -1,4 +1,4 @@
-package com.cn.web.config;
+package com.cn.config;
 
 import com.cn.beans.common.ResultBean;
 import org.apache.log4j.Logger;

@@ -21,19 +21,16 @@ public class UserController {
 
     @GetMapping("/getUser")
     public User getUser(Integer id) {
-        LOGGER.info("service查询信息" + id);
         return userService.getUser(id);
     }
 
     @GetMapping("/getUserByName")
     public PageInfo<User> getUserByName(String name) {
-        LOGGER.info("service查询信息" + name);
         return userService.getUserByName(name);
     }
 
     @GetMapping("/getUserSlave")
     public User getUserSlave(Integer id) {
-        LOGGER.info("service查询信息" + id);
         return userService.getUserSlave(id);
     }
 }

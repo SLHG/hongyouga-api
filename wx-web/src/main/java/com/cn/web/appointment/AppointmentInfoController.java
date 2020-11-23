@@ -5,6 +5,7 @@ import com.cn.beans.common.ResultBean;
 import com.cn.service.appointment.AppointmentInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class AppointmentInfoController {
      * @param dayNum    获取天数
      * @return 课程列表
      */
-    @RequestMapping("/getAppointmentList")
+    @GetMapping("/getAppointmentList")
     public ResultBean getAppointmentList(@RequestParam String startDate, @RequestParam(defaultValue = "5") int dayNum) {
         ResultBean resultBean = new ResultBean();
         if (StringUtils.isBlank(startDate)) {

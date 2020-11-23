@@ -52,7 +52,7 @@ public class WXMessageController {
      * @param request 微信消息请求
      * @return 转换后的消息map
      */
-    public static Map<String, String> requestParseXml(HttpServletRequest request) {
+    private Map<String, String> requestParseXml(HttpServletRequest request) {
         // 将解析结果存储在HashMap中
         Map<String, String> map = new HashMap<>();
         Element root;
@@ -84,7 +84,7 @@ public class WXMessageController {
      * @return 根元素
      * @throws IOException 读写异常
      */
-    private static Element getRootElement(HttpServletRequest request) throws IOException {
+    private Element getRootElement(HttpServletRequest request) throws IOException {
         // 读取输入流
         SAXReader reader = new SAXReader();
         try (InputStream inputStream = request.getInputStream()) {
