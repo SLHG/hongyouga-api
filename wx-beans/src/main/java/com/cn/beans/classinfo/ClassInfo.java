@@ -1,4 +1,4 @@
-package com.cn.beans.appointment;
+package com.cn.beans.classinfo;
 
 /**
  * 课程信息
