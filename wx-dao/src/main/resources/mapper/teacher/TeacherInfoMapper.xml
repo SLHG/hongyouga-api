@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.teacher.TeacherInfoDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.teacher.TeacherInfo">
+        <result column="teacher_id" property="teacherId" jdbcType="INTEGER"/>
+        <result column="teacher_name" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="teacher_type" property="teacherType" jdbcType="VARCHAR"/>
+        <result column="teacher_introduction" property="teacherIntroduction" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="getTeacherInfoById" resultMap="BaseResultMap" parameterType="int">
+        select teacher_name, teacher_type, teacher_introduction
+        from teacher_info
+        where teacher_id = #{id};
+    </select>
+
+</mapper>

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/appointment")
+@RequestMapping("/view/appointment")
 public class AppointmentInfoController {
 
     @Autowired
