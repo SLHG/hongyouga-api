@@ -11,6 +11,7 @@
         select class_name, class_type, class_introduction
         from class_info
         where class_id = #{id}
+        limit 1;
     </select>
 
 </mapper>

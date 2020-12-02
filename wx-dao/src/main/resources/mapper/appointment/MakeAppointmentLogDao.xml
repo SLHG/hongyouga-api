@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.appointment.MakeAppointmentLogDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.appointment.MakeAppointmentLog">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="open_id" property="openId" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+        <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="teacher_name" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="client_type" property="clientType" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="insertMakeAppointmentLogList" parameterType="list">
+        insert into make_appointment_log(class_name, start_time, end_time, teacher_name, open_id, mobile, name, sex,
+        client_type) VALUES
+        <foreach collection="list" item="log" index="index" separator=",">
+            (
+            #{log.className},
+            #{log.startTime},
+            #{log.endTime},
+            #{log.teacherName},
+            #{log.openId},
+            #{log.mobile},
+            #{log.name},
+            #{log.sex},
+            #{log.clientType}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

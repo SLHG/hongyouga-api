@@ -12,7 +12,8 @@
         select response_msg_type, content, media_id
         from wx_msg_info
         where request_msg_type = #{requestMsgType}
-          and key_word like CONCAT('%', #{keyWord}, '%');
+          and key_word like CONCAT('%', #{keyWord}, '%')
+        limit 1;
     </select>
 
 </mapper>

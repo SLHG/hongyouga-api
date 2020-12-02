@@ -39,4 +39,16 @@ public class AppointmentInfoController {
         resultBean.setResult(appointmentInfoMap);
         return resultBean;
     }
+
+    /**
+     * 进行课程预约
+     *
+     * @param openId        用户id
+     * @param appointmentId 课程id
+     * @return 预约情况
+     */
+    @GetMapping("/makeAppointment")
+    public ResultBean makeAppointment(@RequestParam String openId, @RequestParam String appointmentId) {
+        return appointmentInfoService.makeAppointment(openId, appointmentId);
+    }
 }

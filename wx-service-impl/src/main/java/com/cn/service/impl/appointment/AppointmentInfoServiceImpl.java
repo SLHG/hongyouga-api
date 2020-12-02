@@ -1,24 +1,45 @@
 package com.cn.service.impl.appointment;
 
+import com.alibaba.fastjson.JSON;
 import com.cn.beans.appointment.AppointmentInfo;
+import com.cn.beans.appointment.MakeAppointmentLog;
+import com.cn.beans.client.ClientInfo;
 import com.cn.beans.common.Constant;
+import com.cn.beans.common.ResultBean;
 import com.cn.dao.appointment.AppointmentInfoDao;
 import com.cn.service.appointment.AppointmentInfoService;
+import com.cn.service.client.ClientInfoService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AppointmentInfoServiceImpl implements AppointmentInfoService {
 
     private static final Logger LOGGER = Logger.getLogger(AppointmentInfoServiceImpl.class);
+    //记录约课人数
+    private static final String APPOINTMENT_NUM = "APPOINTMENT:NUM:";
+    //记录客户已预约课程信息
+    private static final String APPOINTMENT_INFO = "APPOINTMENT:INFO:";
+    //课程已预约标识
+    private static final String IS_APPOINTMENT = "1";
+    private static final long APPOINTMENT_EXPIRE = 30 * 24 * 3600;
 
     @Autowired
     AppointmentInfoDao appointmentInfoDao;
+
+    @Autowired
+    ClientInfoService clientInfoService;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     @Override
     public Map<Integer, List<AppointmentInfo>> getAppointmentList(String startDate, int dayNum) {
@@ -45,5 +66,89 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
             }
         }
         return appointmentInfoMap;
+    }
+
+    @Override
+    public ResultBean makeAppointment(String openId, String appointmentId) {
+        String isAppointment = redisTemplate.opsForValue().get(APPOINTMENT_INFO + openId + Constant.UNDER_LINE + appointmentId);
+        ResultBean resultBean = new ResultBean();
+        if (IS_APPOINTMENT.equals(isAppointment)) {
+            resultBean.setRtnMsg("您已预约过此课程.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        //获取用户信息
+        ClientInfo clientInfo = clientInfoService.getClientInfoByOpenId(openId);
+        if (clientInfo == null) {
+            resultBean.setRtnMsg("客户信息不存在.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        if (!Constant.CLIENT_TYPE_MEMBER.equals(clientInfo.getClientType())) {
+            resultBean.setRtnMsg("预约失败,请与老师联系.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        //获取课程信息
+        AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentInfoById(appointmentId);
+        if (appointmentInfo == null) {
+            resultBean.setRtnMsg("课程信息不存在.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        String startTime = appointmentInfo.getStartTime();
+        String limitNum = appointmentInfo.getLimitNum();
+        if (StringUtils.isBlank(startTime) || StringUtils.isBlank(limitNum)) {
+            resultBean.setRtnMsg("参数错误.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constant.DATE_FORMAT2);
+        Date nowDate = new Date();
+        try {
+            Date startDate = simpleDateFormat.parse(startTime);
+            if (nowDate.getTime() >= startDate.getTime()) {
+                resultBean.setRtnMsg("此课程已过约课时间");
+                resultBean.setRtnCode(ResultBean.FAIL_CODE);
+                return resultBean;
+            }
+        } catch (ParseException e) {
+            LOGGER.error("makeAppointment=>格式化课程日期失败", e);
+        }
+        int limit = Integer.parseInt(limitNum);
+        Long appointmentNum = redisTemplate.opsForValue().increment(APPOINTMENT_NUM + appointmentId);
+        redisTemplate.expire(APPOINTMENT_NUM + appointmentId, APPOINTMENT_EXPIRE, TimeUnit.SECONDS);
+        if (appointmentNum == null || appointmentNum > limit) {
+            redisTemplate.opsForValue().decrement(APPOINTMENT_NUM + appointmentId);
+            resultBean.setRtnMsg("此课程已约满.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        redisTemplate.opsForValue().set(APPOINTMENT_INFO + openId + Constant.UNDER_LINE + appointmentId, IS_APPOINTMENT, APPOINTMENT_EXPIRE, TimeUnit.SECONDS);
+        //记录约课日志
+        insertAppointmentLog(clientInfo, appointmentInfo);
+        return resultBean;
+    }
+
+    /**
+     * 记录客户约课信息日志
+     *
+     * @param clientInfo      客户信息
+     * @param appointmentInfo 约课信息
+     */
+    private void insertAppointmentLog(ClientInfo clientInfo, AppointmentInfo appointmentInfo) {
+        MakeAppointmentLog log = new MakeAppointmentLog();
+        log.setClassName(appointmentInfo.getClassName());
+        log.setTeacherName(appointmentInfo.getTeacherName());
+        log.setStartTime(appointmentInfo.getStartTime());
+        log.setEndTime(appointmentInfo.getEndTime());
+        log.setClientType(clientInfo.getClientType());
+        log.setSex(clientInfo.getSex());
+        log.setOpenId(clientInfo.getOpenId());
+        log.setName(log.getName());
+        log.setMobile(log.getMobile());
+        //记录约课日志
+        redisTemplate.opsForList().rightPush(Constant.APPOINTMENT_LOG, JSON.toJSONString(log));
+        redisTemplate.expire(Constant.APPOINTMENT_LOG, APPOINTMENT_EXPIRE, TimeUnit.SECONDS);
     }
 }

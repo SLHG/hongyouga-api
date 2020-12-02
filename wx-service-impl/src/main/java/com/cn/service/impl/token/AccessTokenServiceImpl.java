@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AccessTokenServiceImpl implements AccessTokenService {
@@ -68,7 +69,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
             LOGGER.error("initAccessToken=>获取AccessToken失败:" + tokenStr);
             return "";
         }
-        redisTemplate.opsForValue().set(TOKEN_REDIS_KEY, accessToken, TOKEN_REDIS_EXPIRE);
+        redisTemplate.opsForValue().set(TOKEN_REDIS_KEY, accessToken, TOKEN_REDIS_EXPIRE, TimeUnit.SECONDS);
         return accessToken;
     }
 }

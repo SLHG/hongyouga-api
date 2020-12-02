@@ -10,7 +10,8 @@
     <select id="getTeacherInfoById" resultMap="BaseResultMap" parameterType="int">
         select teacher_name, teacher_type, teacher_introduction
         from teacher_info
-        where teacher_id = #{id};
+        where teacher_id = #{id}
+        limit 1;
     </select>
 
 </mapper>
