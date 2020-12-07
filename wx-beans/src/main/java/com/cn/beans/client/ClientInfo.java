@@ -6,7 +6,7 @@ public class ClientInfo {
     //手机号
     private String mobile;
     //客户姓名
-    private String name;
+    private String clientName;
     //客户性别
     private String sex;
     //信息创建时间
@@ -64,12 +64,12 @@ public class ClientInfo {
         this.classEndTime = classEndTime;
     }
 
-    public String getName() {
-        return name;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ClientInfo {
         return "ClientInfo{" +
                 "openId='" + openId + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", name='" + name + '\'' +
+                ", clientName='" + clientName + '\'' +
                 ", sex='" + sex + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", clientType='" + clientType + '\'' +

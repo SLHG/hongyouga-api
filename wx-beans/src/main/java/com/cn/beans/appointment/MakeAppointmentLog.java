@@ -19,7 +19,7 @@ public class MakeAppointmentLog {
     //手机号
     private String mobile;
     //客户姓名
-    private String name;
+    private String clientName;
     //客户性别
     private String sex;
     //客户类型
@@ -75,12 +75,12 @@ public class MakeAppointmentLog {
         this.mobile = mobile;
     }
 
-    public String getName() {
-        return name;
+    public String getClientName() {
+        return clientName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public String getSex() {
@@ -125,7 +125,7 @@ public class MakeAppointmentLog {
                 ", teacherName='" + teacherName + '\'' +
                 ", openId='" + openId + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", name='" + name + '\'' +
+                ", clientName='" + clientName + '\'' +
                 ", sex='" + sex + '\'' +
                 ", clientType='" + clientType + '\'' +
                 ", appointmentStatus=" + appointmentStatus +

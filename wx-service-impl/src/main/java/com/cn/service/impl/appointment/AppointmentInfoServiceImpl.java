@@ -149,7 +149,7 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
         log.setClientType(clientInfo.getClientType());
         log.setSex(clientInfo.getSex());
         log.setOpenId(clientInfo.getOpenId());
-        log.setName(clientInfo.getName());
+        log.setClientName(clientInfo.getClientName());
         log.setMobile(clientInfo.getMobile());
         log.setAppointmentStatus(appointmentStatus);
         //记录约课日志
