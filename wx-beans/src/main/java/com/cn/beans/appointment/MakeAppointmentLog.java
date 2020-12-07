@@ -24,6 +24,8 @@ public class MakeAppointmentLog {
     private String sex;
     //客户类型
     private String clientType;
+    //约课状态
+    private int appointmentStatus;
 
     public String getClassName() {
         return className;
@@ -105,6 +107,14 @@ public class MakeAppointmentLog {
         this.id = id;
     }
 
+    public int getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(int appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
+    }
+
     @Override
     public String toString() {
         return "MakeAppointmentLog{" +
@@ -118,6 +128,7 @@ public class MakeAppointmentLog {
                 ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", clientType='" + clientType + '\'' +
+                ", appointmentStatus=" + appointmentStatus +
                 '}';
     }
 }

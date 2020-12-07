@@ -12,10 +12,11 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
         <result column="client_type" property="clientType" jdbcType="VARCHAR"/>
+        <result column="appointment_status" property="appointmentStatus" jdbcType="INTEGER"/>
     </resultMap>
     <insert id="insertMakeAppointmentLogList" parameterType="list">
         insert into make_appointment_log(class_name, start_time, end_time, teacher_name, open_id, mobile, name, sex,
-        client_type) VALUES
+        client_type,appointment_status) VALUES
         <foreach collection="list" item="log" index="index" separator=",">
             (
             #{log.className},
@@ -26,7 +27,8 @@
             #{log.mobile},
             #{log.name},
             #{log.sex},
-            #{log.clientType}
+            #{log.clientType},
+            #{log.appointmentStatus}
             )
         </foreach>
     </insert>

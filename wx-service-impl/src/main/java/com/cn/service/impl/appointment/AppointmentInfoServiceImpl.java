@@ -2,6 +2,7 @@ package com.cn.service.impl.appointment;
 
 import com.alibaba.fastjson.JSON;
 import com.cn.beans.appointment.AppointmentInfo;
+import com.cn.beans.appointment.AppointmentStatus;
 import com.cn.beans.appointment.MakeAppointmentLog;
 import com.cn.beans.client.ClientInfo;
 import com.cn.beans.common.Constant;
@@ -84,16 +85,17 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
             resultBean.setRtnCode(ResultBean.FAIL_CODE);
             return resultBean;
         }
-        if (!Constant.CLIENT_TYPE_MEMBER.equals(clientInfo.getClientType())) {
-            resultBean.setRtnMsg("预约失败,请与老师联系.");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            return resultBean;
-        }
         //获取课程信息
         AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentInfoById(appointmentId);
         if (appointmentInfo == null) {
             resultBean.setRtnMsg("课程信息不存在.");
             resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            return resultBean;
+        }
+        if (!Constant.CLIENT_TYPE_MEMBER.equals(clientInfo.getClientType())) {
+            resultBean.setRtnMsg("预约失败,请与老师联系.");
+            resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            insertAppointmentLog(clientInfo, appointmentInfo, AppointmentStatus.NON_MEMBER.getStatus());
             return resultBean;
         }
         String startTime = appointmentInfo.getStartTime();
@@ -122,21 +124,23 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
             redisTemplate.opsForValue().decrement(APPOINTMENT_NUM + appointmentId);
             resultBean.setRtnMsg("此课程已约满.");
             resultBean.setRtnCode(ResultBean.FAIL_CODE);
+            insertAppointmentLog(clientInfo, appointmentInfo, AppointmentStatus.NO_QUOTA.getStatus());
             return resultBean;
         }
         redisTemplate.opsForValue().set(APPOINTMENT_INFO + openId + Constant.UNDER_LINE + appointmentId, IS_APPOINTMENT, APPOINTMENT_EXPIRE, TimeUnit.SECONDS);
         //记录约课日志
-        insertAppointmentLog(clientInfo, appointmentInfo);
+        insertAppointmentLog(clientInfo, appointmentInfo, AppointmentStatus.SUCCESS.getStatus());
         return resultBean;
     }
 
     /**
      * 记录客户约课信息日志
      *
-     * @param clientInfo      客户信息
-     * @param appointmentInfo 约课信息
+     * @param clientInfo        客户信息
+     * @param appointmentInfo   约课信息
+     * @param appointmentStatus 预约情况
      */
-    private void insertAppointmentLog(ClientInfo clientInfo, AppointmentInfo appointmentInfo) {
+    private void insertAppointmentLog(ClientInfo clientInfo, AppointmentInfo appointmentInfo, int appointmentStatus) {
         MakeAppointmentLog log = new MakeAppointmentLog();
         log.setClassName(appointmentInfo.getClassName());
         log.setTeacherName(appointmentInfo.getTeacherName());
@@ -145,8 +149,9 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
         log.setClientType(clientInfo.getClientType());
         log.setSex(clientInfo.getSex());
         log.setOpenId(clientInfo.getOpenId());
-        log.setName(log.getName());
-        log.setMobile(log.getMobile());
+        log.setName(clientInfo.getName());
+        log.setMobile(clientInfo.getMobile());
+        log.setAppointmentStatus(appointmentStatus);
         //记录约课日志
         redisTemplate.opsForList().rightPush(Constant.APPOINTMENT_LOG, JSON.toJSONString(log));
         redisTemplate.expire(Constant.APPOINTMENT_LOG, APPOINTMENT_EXPIRE, TimeUnit.SECONDS);
