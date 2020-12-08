@@ -8,4 +8,6 @@ public interface AppointmentInfoDao {
     List<AppointmentInfo> getAppointmentList(String startDate, String endDate);
 
     AppointmentInfo getAppointmentInfoById(String appointmentId);
+
+    AppointmentInfo getAppointmentByClassId(String classId);
 }

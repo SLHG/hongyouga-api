@@ -7,11 +7,53 @@
         <result column="class_type" property="classType" jdbcType="VARCHAR"/>
         <result column="class_introduction" property="classIntroduction" jdbcType="VARCHAR"/>
     </resultMap>
-    <select id="getClassInfoById" resultMap="BaseResultMap" parameterType="int">
+    <select id="getClassInfoById" resultMap="BaseResultMap" parameterType="map">
         select class_name, class_type, class_introduction
         from class_info
-        where class_id = #{id}
+        where class_id = #{classId}
+          and is_enable = #{isEnable}
         limit 1;
     </select>
-
+    <insert id="insertClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
+        insert into class_info(class_name, class_type, class_introduction)
+        values (#{className}, #{classType}, #{classIntroduction});
+    </insert>
+    <update id="updateClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
+        update class_info
+        <set>
+            <if test="className != null and className != ''">
+                class_name=
+                #{className},
+            </if>
+            <if test="classType != null and classType != ''">
+                class_type=
+                #{classType},
+            </if>
+            <if test="classIntroduction != null and classIntroduction != ''">
+                class_introduction=
+                #{classIntroduction},
+            </if>
+        </set>
+        where class_id = #{classId} and is_enable =#{isEnable} limit 1
+    </update>
+    <update id="deleteClassInfo" parameterType="map">
+        update class_info
+        set is_enable =#{isEnable}
+        where class_id = #{classId}
+        limit 1;
+    </update>
+    <select id="getClassInfoList" resultMap="BaseResultMap" parameterType="map">
+        select class_id, class_name, class_type, class_introduction
+        from class_info
+        <where>
+            is_enable=#{isEnable}
+            <if test="className != null and className != ''">
+                and  class_name like CONCAT('%',
+                #{className},
+                '%'
+                )
+            </if>
+        </where>
+        order by create_time desc
+    </select>
 </mapper>

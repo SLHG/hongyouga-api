@@ -13,6 +13,10 @@ public class ClassInfo {
     private String classType;
     //课程简介
     private String classIntroduction;
+    //创建时间
+    private String createTime;
+    //是否可用
+    private String isEnable;
 
     public String getClassId() {
         return classId;
@@ -46,6 +50,22 @@ public class ClassInfo {
         this.classIntroduction = classIntroduction;
     }
 
+    public String getIsEnable() {
+        return isEnable;
+    }
+
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "ClassInfo{" +
@@ -53,6 +73,8 @@ public class ClassInfo {
                 ", className='" + className + '\'' +
                 ", classType='" + classType + '\'' +
                 ", classIntroduction='" + classIntroduction + '\'' +
+                ", createTime='" + createTime + '\'' +
+                ", isEnable='" + isEnable + '\'' +
                 '}';
     }
 }
