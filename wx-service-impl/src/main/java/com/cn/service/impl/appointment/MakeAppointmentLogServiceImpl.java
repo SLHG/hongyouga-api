@@ -5,6 +5,8 @@ import com.cn.beans.appointment.MakeAppointmentLog;
 import com.cn.beans.common.Constant;
 import com.cn.dao.appointment.MakeAppointmentLogDao;
 import com.cn.service.appointment.MakeAppointmentLogService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,5 +39,12 @@ public class MakeAppointmentLogServiceImpl implements MakeAppointmentLogService 
             return;
         }
         makeAppointmentLogDao.insertMakeAppointmentLogList(logs);
+    }
+
+    @Override
+    public PageInfo<MakeAppointmentLog> getMakeAppointmentLogList(int start, int limit, String startDate, String endDate, String mobile) {
+        PageHelper.startPage(start, limit);
+        List<MakeAppointmentLog> makeAppointmentLogList = makeAppointmentLogDao.getMakeAppointmentLogList(startDate, endDate, mobile);
+        return new PageInfo<>(makeAppointmentLogList);
     }
 }

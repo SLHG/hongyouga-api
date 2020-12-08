@@ -8,12 +8,16 @@ public class MakeAppointmentLog {
     private String id;
     //课程名称
     private String className;
+    //课程信息表主键
+    private String classId;
     //结束时间
     private String startTime;
     //开始时间
     private String endTime;
     //老师姓名
     private String teacherName;
+    //老师信息表主键
+    private String teacherId;
     //微信id
     private String openId;
     //手机号
@@ -26,6 +30,10 @@ public class MakeAppointmentLog {
     private String clientType;
     //约课状态
     private int appointmentStatus;
+    //约课信息表主键
+    private String appointmentId;
+    //创建时间
+    private String createTime;
 
     public String getClassName() {
         return className;
@@ -115,20 +123,56 @@ public class MakeAppointmentLog {
         this.appointmentStatus = appointmentStatus;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getClassId() {
+        return classId;
+    }
+
+    public void setClassId(String classId) {
+        this.classId = classId;
+    }
+
+    public String getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(String teacherId) {
+        this.teacherId = teacherId;
+    }
+
+    public String getAppointmentId() {
+        return appointmentId;
+    }
+
+    public void setAppointmentId(String appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+
     @Override
     public String toString() {
         return "MakeAppointmentLog{" +
                 "id='" + id + '\'' +
                 ", className='" + className + '\'' +
+                ", classId='" + classId + '\'' +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
                 ", teacherName='" + teacherName + '\'' +
+                ", teacherId='" + teacherId + '\'' +
                 ", openId='" + openId + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", clientName='" + clientName + '\'' +
                 ", sex='" + sex + '\'' +
                 ", clientType='" + clientType + '\'' +
                 ", appointmentStatus=" + appointmentStatus +
+                ", appointmentId=" + appointmentId +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

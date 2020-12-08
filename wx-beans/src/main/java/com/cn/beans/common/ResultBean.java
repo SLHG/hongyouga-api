@@ -10,7 +10,7 @@ public class ResultBean {
     private String rtnCode = SUCCESS_CODE;
     private String rtnMsg = SUCCESS_MSG;
     private Object result;
-    private List<Object> resultList;
+    private List<?> resultList;
 
     public String getRtnCode() {
         return rtnCode;
@@ -36,11 +36,11 @@ public class ResultBean {
         this.result = result;
     }
 
-    public List<Object> getResultList() {
+    public List<?> getResultList() {
         return resultList;
     }
 
-    public void setResultList(List<Object> resultList) {
+    public void setResultList(List<?> resultList) {
         this.resultList = resultList;
     }
 

@@ -20,7 +20,14 @@
     </select>
 
     <select id="getAppointmentInfoById" resultMap="BaseResultMap" parameterType="string">
-        select class_name, start_time, limit_num, teacher_name, end_time
+        select class_name,
+               start_time,
+               limit_num,
+               teacher_name,
+               end_time,
+               class_id,
+               teacher_id,
+               appointment_id
         from appointment_info
         where appointment_id = #{_parameter}
         limit 1;

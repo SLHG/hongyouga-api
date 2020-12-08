@@ -151,6 +151,9 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
         log.setOpenId(clientInfo.getOpenId());
         log.setClientName(clientInfo.getClientName());
         log.setMobile(clientInfo.getMobile());
+        log.setTeacherId(appointmentInfo.getTeacherId());
+        log.setClassId(appointmentInfo.getClassId());
+        log.setAppointmentId(appointmentInfo.getAppointmentId());
         log.setAppointmentStatus(appointmentStatus);
         //记录约课日志
         redisTemplate.opsForList().rightPush(Constant.APPOINTMENT_LOG, JSON.toJSONString(log));
