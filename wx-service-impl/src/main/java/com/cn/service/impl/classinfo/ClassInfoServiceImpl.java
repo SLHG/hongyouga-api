@@ -2,6 +2,7 @@ package com.cn.service.impl.classinfo;
 
 import com.cn.beans.appointment.AppointmentInfo;
 import com.cn.beans.classinfo.ClassInfo;
+import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
 import com.cn.dao.appointment.AppointmentInfoDao;
 import com.cn.dao.classinfo.ClassInfoDao;
@@ -11,6 +12,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,7 +46,9 @@ public class ClassInfoServiceImpl implements ClassInfoService {
     @Override
     public ResultBean deleteClassInfo(String classId) {
         ResultBean resultBean = new ResultBean();
-        AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentByClassId(classId);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constant.DATE_FORMAT2);
+        String nowTime = simpleDateFormat.format(new Date());
+        AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentByClassId(classId, nowTime);
         if (appointmentInfo != null) {
             resultBean.setRtnMsg("此课程还在使用中,无法删除");
             resultBean.setRtnCode(ResultBean.FAIL_CODE);

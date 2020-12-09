@@ -32,10 +32,18 @@
         where appointment_id = #{_parameter}
         limit 1;
     </select>
-    <select id="getAppointmentByClassId" parameterType="string" resultMap="BaseResultMap">
+    <select id="getAppointmentByClassId" parameterType="map" resultMap="BaseResultMap">
         select appointment_id
         from appointment_info
-        where class_id = #{_parameter}
+        where class_id = #{classId}
+          and start_time &gt; #{nowTime}
+        limit 1;
+    </select>
+    <select id="getAppointmentByTeacherId" parameterType="map" resultMap="BaseResultMap">
+        select appointment_id
+        from appointment_info
+        where class_id = #{teacherId}
+          and start_time &gt; #{nowTime}
         limit 1;
     </select>
 </mapper>

@@ -10,6 +10,10 @@ public class TeacherInfo {
     private String teacherType;
     //老师简介
     private String teacherIntroduction;
+    //是否可用
+    private String isEnable;
+    //创建时间
+    private String createTime;
 
     public String getTeacherId() {
         return teacherId;
@@ -43,6 +47,22 @@ public class TeacherInfo {
         this.teacherIntroduction = teacherIntroduction;
     }
 
+    public String getIsEnable() {
+        return isEnable;
+    }
+
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "TeacherInfo{" +
@@ -50,6 +70,8 @@ public class TeacherInfo {
                 ", teacherName='" + teacherName + '\'' +
                 ", teacherType='" + teacherType + '\'' +
                 ", teacherIntroduction='" + teacherIntroduction + '\'' +
+                ", isEnable='" + isEnable + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }
