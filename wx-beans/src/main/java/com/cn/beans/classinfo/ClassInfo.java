@@ -9,14 +9,16 @@ public class ClassInfo {
     private String classId;
     //课程名称
     private String className;
-    //课程类型
-    private String classType;
+    //课程特色
+    private String classFeatures;
     //课程简介
     private String classIntroduction;
     //创建时间
     private String createTime;
     //是否可用
     private String isEnable;
+    //课程类型
+    private String classType;
 
     public String getClassId() {
         return classId;
@@ -58,6 +60,14 @@ public class ClassInfo {
         this.isEnable = isEnable;
     }
 
+    public String getClassFeatures() {
+        return classFeatures;
+    }
+
+    public void setClassFeatures(String classFeatures) {
+        this.classFeatures = classFeatures;
+    }
+
     public String getCreateTime() {
         return createTime;
     }
@@ -71,10 +81,11 @@ public class ClassInfo {
         return "ClassInfo{" +
                 "classId='" + classId + '\'' +
                 ", className='" + className + '\'' +
-                ", classType='" + classType + '\'' +
+                ", classFeatures='" + classFeatures + '\'' +
                 ", classIntroduction='" + classIntroduction + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", isEnable='" + isEnable + '\'' +
+                ", classType='" + classType + '\'' +
                 '}';
     }
 }

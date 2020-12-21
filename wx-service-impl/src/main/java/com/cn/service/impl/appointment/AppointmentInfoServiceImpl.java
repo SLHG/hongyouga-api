@@ -92,12 +92,6 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
             resultBean.setRtnCode(ResultBean.FAIL_CODE);
             return resultBean;
         }
-        if (!Constant.CLIENT_TYPE_MEMBER.equals(clientInfo.getClientType())) {
-            resultBean.setRtnMsg("预约失败,请与老师联系.");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            insertAppointmentLog(clientInfo, appointmentInfo, AppointmentStatus.NON_MEMBER.getStatus());
-            return resultBean;
-        }
         String startTime = appointmentInfo.getStartTime();
         String limitNum = appointmentInfo.getLimitNum();
         if (StringUtils.isBlank(startTime) || StringUtils.isBlank(limitNum)) {
@@ -146,7 +140,6 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
         log.setTeacherName(appointmentInfo.getTeacherName());
         log.setStartTime(appointmentInfo.getStartTime());
         log.setEndTime(appointmentInfo.getEndTime());
-        log.setClientType(clientInfo.getClientType());
         log.setSex(clientInfo.getSex());
         log.setOpenId(clientInfo.getOpenId());
         log.setClientName(clientInfo.getClientName());

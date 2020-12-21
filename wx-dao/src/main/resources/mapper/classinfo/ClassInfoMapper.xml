@@ -5,18 +5,19 @@
         <result column="class_id" property="classId" jdbcType="INTEGER"/>
         <result column="class_name" property="className" jdbcType="VARCHAR"/>
         <result column="class_type" property="classType" jdbcType="VARCHAR"/>
+        <result column="class_features" property="classFeatures" jdbcType="VARCHAR"/>
         <result column="class_introduction" property="classIntroduction" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="getClassInfoById" resultMap="BaseResultMap" parameterType="map">
-        select class_name, class_type, class_introduction
+        select class_name, class_type, class_introduction, class_features
         from class_info
         where class_id = #{classId}
           and is_enable = #{isEnable}
         limit 1;
     </select>
     <insert id="insertClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
-        insert into class_info(class_name, class_type, class_introduction)
-        values (#{className}, #{classType}, #{classIntroduction});
+        insert into class_info(class_name, class_type, class_introduction, class_features)
+        values (#{className}, #{classType}, #{classIntroduction}, #{classFeatures});
     </insert>
     <update id="updateClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
         update class_info
@@ -33,6 +34,10 @@
                 class_introduction=
                 #{classIntroduction},
             </if>
+            <if test="classFeatures != null and classFeatures != ''">
+                class_features=
+                #{classFeatures},
+            </if>
         </set>
         where class_id = #{classId} and is_enable =#{isEnable} limit 1
     </update>
@@ -43,7 +48,7 @@
         limit 1;
     </update>
     <select id="getClassInfoList" resultMap="BaseResultMap" parameterType="map">
-        select class_id, class_name, class_type, class_introduction
+        select class_id, class_name, class_type, class_introduction,class_features
         from class_info
         <where>
             is_enable=#{isEnable}

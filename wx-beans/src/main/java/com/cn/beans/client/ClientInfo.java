@@ -11,10 +11,6 @@ public class ClientInfo {
     private String sex;
     //信息创建时间
     private String createTime;
-    //客户类型
-    private String clientType;
-    //客户课程结束时间
-    private String classEndTime;
 
     public String getOpenId() {
         return openId;
@@ -48,22 +44,6 @@ public class ClientInfo {
         this.createTime = createTime;
     }
 
-    public String getClientType() {
-        return clientType;
-    }
-
-    public void setClientType(String clientType) {
-        this.clientType = clientType;
-    }
-
-    public String getClassEndTime() {
-        return classEndTime;
-    }
-
-    public void setClassEndTime(String classEndTime) {
-        this.classEndTime = classEndTime;
-    }
-
     public String getClientName() {
         return clientName;
     }
@@ -80,8 +60,6 @@ public class ClientInfo {
                 ", clientName='" + clientName + '\'' +
                 ", sex='" + sex + '\'' +
                 ", createTime='" + createTime + '\'' +
-                ", clientType='" + clientType + '\'' +
-                ", classEndTime='" + classEndTime + '\'' +
                 '}';
     }
 }
