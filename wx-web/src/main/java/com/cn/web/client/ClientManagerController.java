@@ -4,7 +4,6 @@ import com.cn.beans.client.ClientInfo;
 import com.cn.beans.common.ResultBean;
 import com.cn.service.client.ClientInfoService;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,8 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/manager/client")
 public class ClientManagerController {
 
-    @Autowired
-    ClientInfoService clientInfoService;
+    final ClientInfoService clientInfoService;
+
+    public ClientManagerController(ClientInfoService clientInfoService) {
+        this.clientInfoService = clientInfoService;
+    }
 
     @GetMapping("/getClientInfoList")
     public ResultBean getClientInfoList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int limit, String clientName, String mobile) {

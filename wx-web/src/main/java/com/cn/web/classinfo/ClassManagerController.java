@@ -5,15 +5,17 @@ import com.cn.beans.common.ResultBean;
 import com.cn.service.classinfo.ClassInfoService;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manager/class")
 public class ClassManagerController {
 
-    @Autowired
-    ClassInfoService classInfoService;
+    final ClassInfoService classInfoService;
+
+    public ClassManagerController(ClassInfoService classInfoService) {
+        this.classInfoService = classInfoService;
+    }
 
     /**
      * 新增课程信息

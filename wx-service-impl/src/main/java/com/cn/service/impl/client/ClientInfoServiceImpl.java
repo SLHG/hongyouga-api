@@ -5,7 +5,6 @@ import com.cn.dao.client.ClientInfoDao;
 import com.cn.service.client.ClientInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +15,11 @@ import java.util.List;
 @Service
 public class ClientInfoServiceImpl implements ClientInfoService {
 
-    @Autowired
-    ClientInfoDao clientInfoDao;
+    final ClientInfoDao clientInfoDao;
+
+    public ClientInfoServiceImpl(ClientInfoDao clientInfoDao) {
+        this.clientInfoDao = clientInfoDao;
+    }
 
     @Override
     public ClientInfo getClientInfoByOpenId(String openId) {

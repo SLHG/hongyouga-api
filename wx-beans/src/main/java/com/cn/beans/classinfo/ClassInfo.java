@@ -16,7 +16,7 @@ public class ClassInfo {
     //创建时间
     private String createTime;
     //是否可用
-    private String isEnable;
+    private int isEnable;
     //课程类型
     private String classType;
 
@@ -52,11 +52,11 @@ public class ClassInfo {
         this.classIntroduction = classIntroduction;
     }
 
-    public String getIsEnable() {
+    public int getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(String isEnable) {
+    public void setIsEnable(int isEnable) {
         this.isEnable = isEnable;
     }
 

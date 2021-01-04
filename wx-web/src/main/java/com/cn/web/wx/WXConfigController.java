@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,11 +38,14 @@ public class WXConfigController {
     @Value("${wx.url.ticket}")
     private String ticketUrl;
 
-    @Autowired
-    RedisTemplate<String, Object> redisTemplate;
+    final RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
-    AccessTokenService accessTokenService;
+    final AccessTokenService accessTokenService;
+
+    public WXConfigController(RedisTemplate<String, Object> redisTemplate, AccessTokenService accessTokenService) {
+        this.redisTemplate = redisTemplate;
+        this.accessTokenService = accessTokenService;
+    }
 
     @GetMapping("/getWXConfig")
     public ResultBean getWXConfig(String url) {

@@ -3,7 +3,6 @@ package com.cn.web.classinfo;
 import com.cn.beans.classinfo.ClassInfo;
 import com.cn.beans.common.ResultBean;
 import com.cn.service.classinfo.ClassInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/view/class")
 public class ClassInfoController {
 
-    @Autowired
-    ClassInfoService classInfoService;
+    final ClassInfoService classInfoService;
+
+    public ClassInfoController(ClassInfoService classInfoService) {
+        this.classInfoService = classInfoService;
+    }
 
     /**
      * 根据课程id获取课程信息

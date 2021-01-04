@@ -5,24 +5,26 @@ package com.cn.beans.classpackage;
  */
 public class ClassPackageType {
     //主键
-    private int id;
+    private int packageId;
     //套餐名称
     private String packageName;
     //可用时长,单位:天
-    private String enableTime;
+    private int enableTime;
     //可用次数
     private int enableNum;
     //可用课程类型.例如:1-大课,2-私教
     private String classType;
-    //套餐状态
-    private String isEnable;
+    //套餐是否可用 0-删除,1-可用
+    private int isEnable;
+    //套餐状态 0-暂停,1-启用
+    private int status;
 
-    public int getId() {
-        return id;
+    public int getPackageId() {
+        return packageId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPackageId(int packageId) {
+        this.packageId = packageId;
     }
 
     public String getPackageName() {
@@ -33,11 +35,11 @@ public class ClassPackageType {
         this.packageName = packageName;
     }
 
-    public String getEnableTime() {
+    public int getEnableTime() {
         return enableTime;
     }
 
-    public void setEnableTime(String enableTime) {
+    public void setEnableTime(int enableTime) {
         this.enableTime = enableTime;
     }
 
@@ -57,23 +59,32 @@ public class ClassPackageType {
         this.classType = classType;
     }
 
-    public String getIsEnable() {
+    public int getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(String isEnable) {
+    public void setIsEnable(int isEnable) {
         this.isEnable = isEnable;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "ClassPackageType{" +
-                "id=" + id +
+                "packageId=" + packageId +
                 ", packageName='" + packageName + '\'' +
-                ", enableTime='" + enableTime + '\'' +
+                ", enableTime=" + enableTime +
                 ", enableNum=" + enableNum +
                 ", classType='" + classType + '\'' +
-                ", isEnable='" + isEnable + '\'' +
+                ", isEnable=" + isEnable +
+                ", status=" + status +
                 '}';
     }
 }

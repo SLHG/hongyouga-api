@@ -11,7 +11,7 @@ public class TeacherInfo {
     //老师简介
     private String teacherIntroduction;
     //是否可用
-    private String isEnable;
+    private int isEnable;
     //创建时间
     private String createTime;
 
@@ -47,11 +47,11 @@ public class TeacherInfo {
         this.teacherIntroduction = teacherIntroduction;
     }
 
-    public String getIsEnable() {
+    public int getIsEnable() {
         return isEnable;
     }
 
-    public void setIsEnable(String isEnable) {
+    public void setIsEnable(int isEnable) {
         this.isEnable = isEnable;
     }
 

@@ -12,6 +12,14 @@ public class ResultBean {
     private Object result;
     private List<?> resultList;
 
+    public ResultBean(String rtnCode, String rtnMsg) {
+        this.rtnCode = rtnCode;
+        this.rtnMsg = rtnMsg;
+    }
+
+    public ResultBean() {
+    }
+
     public String getRtnCode() {
         return rtnCode;
     }

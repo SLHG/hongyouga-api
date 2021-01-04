@@ -5,15 +5,17 @@ import com.cn.beans.teacher.TeacherInfo;
 import com.cn.service.teacher.TeacherInfoService;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manager/teacher")
 public class TeacherManagerController {
 
-    @Autowired
-    TeacherInfoService teacherInfoService;
+    final TeacherInfoService teacherInfoService;
+
+    public TeacherManagerController(TeacherInfoService teacherInfoService) {
+        this.teacherInfoService = teacherInfoService;
+    }
 
     /**
      * 新增老师信息

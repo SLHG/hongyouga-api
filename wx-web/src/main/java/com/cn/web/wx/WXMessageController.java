@@ -7,7 +7,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +28,11 @@ public class WXMessageController {
 
     private static final Logger LOGGER = Logger.getLogger(WXConfigController.class);
 
-    @Autowired
-    WXMsgService wxMessageService;
+    final WXMsgService wxMessageService;
+
+    public WXMessageController(WXMsgService wxMessageService) {
+        this.wxMessageService = wxMessageService;
+    }
 
 
     @GetMapping("/acceptWXMessage")

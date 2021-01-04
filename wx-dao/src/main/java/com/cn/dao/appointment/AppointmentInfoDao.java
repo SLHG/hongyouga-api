@@ -2,9 +2,11 @@ package com.cn.dao.appointment;
 
 import com.cn.beans.appointment.AppointmentInfo;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface AppointmentInfoDao {
     List<AppointmentInfo> getAppointmentList(String startDate, String endDate);
 

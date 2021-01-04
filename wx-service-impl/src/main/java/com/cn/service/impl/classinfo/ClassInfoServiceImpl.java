@@ -4,12 +4,12 @@ import com.cn.beans.appointment.AppointmentInfo;
 import com.cn.beans.classinfo.ClassInfo;
 import com.cn.beans.common.Constant;
 import com.cn.beans.common.ResultBean;
+import com.cn.beans.common.Status;
 import com.cn.dao.appointment.AppointmentInfoDao;
 import com.cn.dao.classinfo.ClassInfoDao;
 import com.cn.service.classinfo.ClassInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -18,18 +18,18 @@ import java.util.List;
 
 @Service
 public class ClassInfoServiceImpl implements ClassInfoService {
-    //课程信息状态1-可用,0-不可用
-    private static final String isNotEnable = "0";
-    private static final String isEnable = "1";
 
-    @Autowired
-    ClassInfoDao classInfoDao;
-    @Autowired
-    AppointmentInfoDao appointmentInfoDao;
+    final ClassInfoDao classInfoDao;
+    final AppointmentInfoDao appointmentInfoDao;
+
+    public ClassInfoServiceImpl(ClassInfoDao classInfoDao, AppointmentInfoDao appointmentInfoDao) {
+        this.classInfoDao = classInfoDao;
+        this.appointmentInfoDao = appointmentInfoDao;
+    }
 
     @Override
     public ClassInfo getClassInfoById(int classId) {
-        return classInfoDao.getClassInfoById(classId, isEnable);
+        return classInfoDao.getClassInfoById(classId, Status.IS_ENABLE.getStatus());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 
     @Override
     public int updateClassInfo(ClassInfo classInfo) {
-        classInfo.setIsEnable(isEnable);
+        classInfo.setIsEnable(Status.IS_ENABLE.getStatus());
         return classInfoDao.updateClassInfo(classInfo);
     }
 
@@ -54,7 +54,7 @@ public class ClassInfoServiceImpl implements ClassInfoService {
             resultBean.setRtnCode(ResultBean.FAIL_CODE);
             return resultBean;
         }
-        int deleteCount = classInfoDao.deleteClassInfo(classId, isNotEnable);
+        int deleteCount = classInfoDao.deleteClassInfo(classId, Status.NOT_ENABLE.getStatus());
         if (deleteCount == 1) {
             return resultBean;
         }
@@ -66,7 +66,7 @@ public class ClassInfoServiceImpl implements ClassInfoService {
     @Override
     public PageInfo<ClassInfo> getClassInfoList(int start, int limit, String className) {
         PageHelper.startPage(start, limit);
-        List<ClassInfo> list = classInfoDao.getClassInfoList(className, isEnable);
+        List<ClassInfo> list = classInfoDao.getClassInfoList(className, Status.IS_ENABLE.getStatus());
         return new PageInfo<>(list);
     }
 }

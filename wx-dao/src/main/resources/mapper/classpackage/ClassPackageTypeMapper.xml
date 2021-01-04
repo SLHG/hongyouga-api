@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.classpackage.ClassPackageTypeDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.classpackage.ClassPackageType">
+        <result column="package_id" property="packageId" jdbcType="INTEGER"/>
+        <result column="package_name" property="packageName" jdbcType="VARCHAR"/>
+        <result column="enable_time" property="enableTime" jdbcType="INTEGER"/>
+        <result column="enable_num" property="enableNum" jdbcType="INTEGER"/>
+        <result column="class_type" property="classType" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getClassPackageTypeList" resultMap="BaseResultMap" parameterType="map">
+        select package_id, package_name, class_type, enable_time, enable_num, status
+        from class_package_type
+        <where>
+            is_enable = #{isEnable}
+            <if test="package_name != null and package_name != ''">
+                and  package_name like CONCAT('%',
+                #{packageName},
+                '%'
+                )
+            </if>
+        </where>
+    </select>
+    <insert id="insertClassPackageType" parameterType="com.cn.beans.classpackage.ClassPackageType">
+        insert into class_package_type(package_name, enable_time, enable_num, class_type, is_enable, status)
+        values (#{packageName}, #{enableTime}, #{enableNum}, #{classType}, #{isEnable}, #{status});
+    </insert>
+    <update id="updateClassPackageType" parameterType="com.cn.beans.classpackage.ClassPackageType">
+        update class_package_type
+        <set>
+            <if test="packageName != null and packageName != ''">
+                package_name=
+                #{packageName},
+            </if>
+            <if test="enableTime != null and enableTime != ''">
+                enable_time=
+                #{enableTime},
+            </if>
+            <if test="enableNum != null and enableNum != ''">
+                enable_num=
+                #{enableNum},
+            </if>
+            <if test="classType != null and classType != ''">
+                class_type=
+                #{classType},
+            </if>
+            <if test="status != null and status != ''">
+                status=
+                #{status},
+            </if>
+        </set>
+        where package_id = #{packageId} and is_enable =#{isEnable} limit 1
+    </update>
+    <update id="deleteClassPackageType" parameterType="map">
+        update class_package_type
+        <set>
+            is_enable= #{isEnable}
+        </set>
+        where package_id = #{packageId} and is_enable =#{isEnable} limit 1
+    </update>
+</mapper>

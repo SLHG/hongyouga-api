@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.dao.classpackage.ClientClassPackageInfoDao">
+    <resultMap id="BaseResultMap" type="com.cn.beans.classpackage.ClientClassPackageInfo">
+        <result column="package_id" property="packageId" jdbcType="INTEGER"/>
+        <result column="package_name" property="endTime" jdbcType="VARCHAR"/>
+        <result column="enable_time" property="beginTime" jdbcType="INTEGER"/>
+        <result column="enable_num" property="enableNum" jdbcType="INTEGER"/>
+        <result column="class_type" property="classType" jdbcType="VARCHAR"/>
+        <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
+    </resultMap>
+    <select id="getClientClassPackageInfoByPackageId" resultMap="BaseResultMap" parameterType="string">
+        select package_id, package_name, class_type, enable_time, enable_num, status
+        from class_package_type
+        <where>
+            is_enable = #{isEnable}
+            <if test="package_name != null and package_name != ''">
+                and  package_name like CONCAT('%',
+                #{packageName},
+                '%'
+                )
+            </if>
+        </where>
+    </select>
+</mapper>

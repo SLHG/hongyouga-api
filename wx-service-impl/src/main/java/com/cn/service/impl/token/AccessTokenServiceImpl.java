@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -36,8 +35,11 @@ public class AccessTokenServiceImpl implements AccessTokenService {
 
     private static final String GRANT_TYPE = "client_credential";
 
-    @Autowired
-    RedisTemplate<String, Object> redisTemplate;
+    final RedisTemplate<String, Object> redisTemplate;
+
+    public AccessTokenServiceImpl(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public String getAccessToken() {

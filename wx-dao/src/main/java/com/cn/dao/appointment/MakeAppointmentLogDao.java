@@ -2,9 +2,11 @@ package com.cn.dao.appointment;
 
 import com.cn.beans.appointment.MakeAppointmentLog;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface MakeAppointmentLogDao {
     void insertMakeAppointmentLogList(List<MakeAppointmentLog> logs);
 

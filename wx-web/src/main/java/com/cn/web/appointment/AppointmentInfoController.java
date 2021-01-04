@@ -4,7 +4,6 @@ import com.cn.beans.appointment.AppointmentInfo;
 import com.cn.beans.common.ResultBean;
 import com.cn.service.appointment.AppointmentInfoService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +16,11 @@ import java.util.Map;
 @RequestMapping("/view/appointment")
 public class AppointmentInfoController {
 
-    @Autowired
-    AppointmentInfoService appointmentInfoService;
+    final AppointmentInfoService appointmentInfoService;
+
+    public AppointmentInfoController(AppointmentInfoService appointmentInfoService) {
+        this.appointmentInfoService = appointmentInfoService;
+    }
 
     /**
      * 获取课程信息列表

@@ -8,7 +8,6 @@ import com.cn.service.appointment.MakeAppointmentLogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,14 @@ import java.util.List;
 @Service
 public class MakeAppointmentLogServiceImpl implements MakeAppointmentLogService {
 
-    @Autowired
-    RedisTemplate<String, String> redisTemplate;
+    final RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
-    MakeAppointmentLogDao makeAppointmentLogDao;
+    final MakeAppointmentLogDao makeAppointmentLogDao;
+
+    public MakeAppointmentLogServiceImpl(MakeAppointmentLogDao makeAppointmentLogDao, RedisTemplate<String, String> redisTemplate) {
+        this.makeAppointmentLogDao = makeAppointmentLogDao;
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void insertMakeAppointmentLog() {

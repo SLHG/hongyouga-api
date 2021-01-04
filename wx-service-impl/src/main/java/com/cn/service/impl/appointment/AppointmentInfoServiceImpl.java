@@ -12,7 +12,6 @@ import com.cn.service.appointment.AppointmentInfoService;
 import com.cn.service.client.ClientInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -33,14 +32,17 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
     private static final String IS_APPOINTMENT = "1";
     private static final long APPOINTMENT_EXPIRE = 30 * 24 * 3600;
 
-    @Autowired
-    AppointmentInfoDao appointmentInfoDao;
+    final AppointmentInfoDao appointmentInfoDao;
 
-    @Autowired
-    ClientInfoService clientInfoService;
+    final ClientInfoService clientInfoService;
 
-    @Autowired
-    RedisTemplate<String, String> redisTemplate;
+    final RedisTemplate<String, String> redisTemplate;
+
+    public AppointmentInfoServiceImpl(AppointmentInfoDao appointmentInfoDao, ClientInfoService clientInfoService, RedisTemplate<String, String> redisTemplate) {
+        this.appointmentInfoDao = appointmentInfoDao;
+        this.clientInfoService = clientInfoService;
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public Map<Integer, List<AppointmentInfo>> getAppointmentList(String startDate, int dayNum) {
