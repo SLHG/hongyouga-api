@@ -12,7 +12,7 @@ public interface AppointmentInfoDao {
 
     AppointmentInfo getAppointmentInfoById(String appointmentId);
 
-    AppointmentInfo getAppointmentByClassId(@Param("classId") String classId, @Param("nowTime") String nowTime);
+    AppointmentInfo getAppointmentByClassId(@Param("classId") int classId, @Param("nowTime") String nowTime);
 
     AppointmentInfo getAppointmentByTeacherId(@Param("teacherId") int teacherId, @Param("nowTime") String nowTime);
 }

@@ -17,6 +17,10 @@ public class ResultBean {
         this.rtnMsg = rtnMsg;
     }
 
+    public ResultBean(Object result) {
+        this.result = result;
+    }
+
     public ResultBean() {
     }
 

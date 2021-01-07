@@ -2,6 +2,7 @@ package com.cn.web.classinfo;
 
 import com.cn.beans.classinfo.ClassInfo;
 import com.cn.beans.common.ResultBean;
+import com.cn.beans.common.Status;
 import com.cn.service.classinfo.ClassInfoService;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -24,14 +25,15 @@ public class ClassManagerController {
      */
     @PostMapping("/insertClassInfo")
     public ResultBean insertClassInfo(@RequestBody ClassInfo classInfo) {
-        ResultBean resultBean = new ResultBean();
         if (StringUtils.isBlank(classInfo.getClassName())) {
-            resultBean.setRtnMsg("课程名称为空");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            return resultBean;
+            return new ResultBean(ResultBean.FAIL_CODE, "课程名称为空.");
+        }
+        int count = classInfoService.getClassInfoCountByName(classInfo.getClassName());
+        if (count == 1) {
+            return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,新增失败");
         }
         classInfoService.insertClassInfo(classInfo);
-        return resultBean;
+        return new ResultBean();
     }
 
     /**
@@ -41,19 +43,7 @@ public class ClassManagerController {
      */
     @PostMapping("/updateClassInfo")
     public ResultBean updateClassInfo(@RequestBody ClassInfo classInfo) {
-        ResultBean resultBean = new ResultBean();
-        if (StringUtils.isBlank(classInfo.getClassId())) {
-            resultBean.setRtnMsg("参数错误");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            return resultBean;
-        }
-        int updateCount = classInfoService.updateClassInfo(classInfo);
-        if (updateCount == 1) {
-            return resultBean;
-        }
-        resultBean.setRtnMsg("更新失败");
-        resultBean.setRtnCode(ResultBean.FAIL_CODE);
-        return resultBean;
+        return classInfoService.updateClassInfo(classInfo);
     }
 
     /**
@@ -62,29 +52,21 @@ public class ClassManagerController {
      * @param classId 课程编码
      */
     @GetMapping("/deleteClassInfo")
-    public ResultBean deleteClassInfo(String classId) {
-        ResultBean resultBean = new ResultBean();
-        if (StringUtils.isBlank(classId)) {
-            resultBean.setRtnMsg("参数错误");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            return resultBean;
-        }
+    public ResultBean deleteClassInfo(@RequestParam(defaultValue = "1") int classId) {
         return classInfoService.deleteClassInfo(classId);
     }
 
     @GetMapping("/getClassInfoById")
     public ResultBean getClassInfoById(@RequestParam(defaultValue = "1") int classId) {
         ResultBean resultBean = new ResultBean();
-        ClassInfo classInfo = classInfoService.getClassInfoById(classId);
+        ClassInfo classInfo = classInfoService.getClassInfoById(classId, Status.IS_ENABLE.getStatus());
         resultBean.setResult(classInfo);
         return resultBean;
     }
 
     @GetMapping("/getClassInfoList")
     public ResultBean getClassInfoList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int limit, String className) {
-        ResultBean resultBean = new ResultBean();
         PageInfo<ClassInfo> classPageInfo = classInfoService.getClassInfoList(start, limit, className);
-        resultBean.setResult(classPageInfo);
-        return resultBean;
+        return new ResultBean(classPageInfo);
     }
 }

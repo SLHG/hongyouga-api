@@ -129,6 +129,11 @@ public class AppointmentInfoServiceImpl implements AppointmentInfoService {
         return resultBean;
     }
 
+    @Override
+    public AppointmentInfo getAppointmentByClassId(int classId, String nowTime) {
+        return appointmentInfoDao.getAppointmentByClassId(classId, nowTime);
+    }
+
     /**
      * 记录客户约课信息日志
      *

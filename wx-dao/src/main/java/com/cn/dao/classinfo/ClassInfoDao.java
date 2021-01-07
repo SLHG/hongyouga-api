@@ -14,7 +14,9 @@ public interface ClassInfoDao {
 
     int updateClassInfo(ClassInfo classInfo);
 
-    int deleteClassInfo(@Param("classId") String classId, @Param("isEnable") int isEnable);
+    int updateClassInfoEnable(@Param("classId") int classId, @Param("isEnable") int isEnable);
 
     List<ClassInfo> getClassInfoList(@Param("className") String className, @Param("isEnable") int isEnable);
+
+    int getClassInfoCountByName(@Param("className") String className, @Param("isEnable") int isEnable);
 }

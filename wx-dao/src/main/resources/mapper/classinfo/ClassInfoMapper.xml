@@ -41,7 +41,7 @@
         </set>
         where class_id = #{classId} and is_enable =#{isEnable} limit 1
     </update>
-    <update id="deleteClassInfo" parameterType="map">
+    <update id="updateClassInfoEnable" parameterType="map">
         update class_info
         set is_enable =#{isEnable}
         where class_id = #{classId}
@@ -60,5 +60,17 @@
             </if>
         </where>
         order by create_time desc
+    </select>
+    <select id="getClassInfoCountByName" resultType="int" parameterType="map">
+        select count(class_id)
+        from class_info
+        <where>
+            is_enable=#{isEnable}
+            and class_name like CONCAT('%',
+            #{className},
+            '%'
+            )
+        </where>
+        limit 1
     </select>
 </mapper>

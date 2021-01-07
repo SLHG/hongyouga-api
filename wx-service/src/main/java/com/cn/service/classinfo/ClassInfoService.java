@@ -5,13 +5,15 @@ import com.cn.beans.common.ResultBean;
 import com.github.pagehelper.PageInfo;
 
 public interface ClassInfoService {
-    ClassInfo getClassInfoById(int classId);
+    ClassInfo getClassInfoById(int classId, int isEnable);
 
     void insertClassInfo(ClassInfo classInfo);
 
-    int updateClassInfo(ClassInfo classInfo);
+    ResultBean updateClassInfo(ClassInfo classInfo);
 
-    ResultBean deleteClassInfo(String classId);
+    ResultBean deleteClassInfo(int classId);
 
     PageInfo<ClassInfo> getClassInfoList(int start, int limit, String className);
+
+    int getClassInfoCountByName(String className);
 }

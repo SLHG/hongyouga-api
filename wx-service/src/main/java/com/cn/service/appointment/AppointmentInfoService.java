@@ -10,4 +10,6 @@ public interface AppointmentInfoService {
     Map<Integer, List<AppointmentInfo>> getAppointmentList(String startDate, int dayNum);
 
     ResultBean makeAppointment(String openId, String appointmentId);
+
+    AppointmentInfo getAppointmentByClassId(int classId, String nowTime);
 }

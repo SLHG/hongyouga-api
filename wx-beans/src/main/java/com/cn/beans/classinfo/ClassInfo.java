@@ -6,7 +6,7 @@ package com.cn.beans.classinfo;
 public class ClassInfo {
 
     //课程id
-    private String classId;
+    private int classId;
     //课程名称
     private String className;
     //课程特色
@@ -20,11 +20,11 @@ public class ClassInfo {
     //课程类型
     private String classType;
 
-    public String getClassId() {
+    public int getClassId() {
         return classId;
     }
 
-    public void setClassId(String classId) {
+    public void setClassId(int classId) {
         this.classId = classId;
     }
 

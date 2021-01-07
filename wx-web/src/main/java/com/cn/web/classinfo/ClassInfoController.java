@@ -2,6 +2,7 @@ package com.cn.web.classinfo;
 
 import com.cn.beans.classinfo.ClassInfo;
 import com.cn.beans.common.ResultBean;
+import com.cn.beans.common.Status;
 import com.cn.service.classinfo.ClassInfoService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,14 +27,10 @@ public class ClassInfoController {
      */
     @GetMapping("/getClassInfoById")
     public ResultBean getClassInfoById(@RequestParam(defaultValue = "1") int classId) {
-        ResultBean resultBean = new ResultBean();
-        ClassInfo classInfo = classInfoService.getClassInfoById(classId);
+        ClassInfo classInfo = classInfoService.getClassInfoById(classId, Status.IS_ENABLE.getStatus());
         if (classInfo == null) {
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            resultBean.setRtnMsg("无数据");
-            return resultBean;
+            return new ResultBean(ResultBean.FAIL_CODE, "无数据");
         }
-        resultBean.setResult(classInfo);
-        return resultBean;
+        return new ResultBean(classInfo);
     }
 }
