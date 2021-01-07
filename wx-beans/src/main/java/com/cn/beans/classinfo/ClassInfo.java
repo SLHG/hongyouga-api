@@ -18,7 +18,7 @@ public class ClassInfo {
     //是否可用
     private int isEnable;
     //课程类型
-    private String classType;
+    private int classType;
 
     public int getClassId() {
         return classId;
@@ -36,11 +36,11 @@ public class ClassInfo {
         this.className = className;
     }
 
-    public String getClassType() {
+    public int getClassType() {
         return classType;
     }
 
-    public void setClassType(String classType) {
+    public void setClassType(int classType) {
         this.classType = classType;
     }
 

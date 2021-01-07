@@ -19,4 +19,6 @@ public interface ClassInfoDao {
     List<ClassInfo> getClassInfoList(@Param("className") String className, @Param("isEnable") int isEnable);
 
     int getClassInfoCountByName(@Param("className") String className, @Param("isEnable") int isEnable);
+
+    ClassInfo getClassInfoByType(@Param("classType") int classTypeId, @Param("isEnable") int isEnable);
 }

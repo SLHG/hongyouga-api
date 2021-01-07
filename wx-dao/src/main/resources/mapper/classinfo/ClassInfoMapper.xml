@@ -73,4 +73,11 @@
         </where>
         limit 1
     </select>
+    <select id="getClassInfoByType" resultMap="BaseResultMap" parameterType="map">
+        select class_type
+        from class_info
+        where class_type = #{classType}
+          and is_enable = #{isEnable}
+        limit 1
+    </select>
 </mapper>

@@ -28,12 +28,7 @@ public class ClassManagerController {
         if (StringUtils.isBlank(classInfo.getClassName())) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程名称为空.");
         }
-        int count = classInfoService.getClassInfoCountByName(classInfo.getClassName());
-        if (count == 1) {
-            return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,新增失败");
-        }
-        classInfoService.insertClassInfo(classInfo);
-        return new ResultBean();
+        return classInfoService.insertClassInfo(classInfo);
     }
 
     /**

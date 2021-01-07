@@ -33,8 +33,13 @@ public class ClassInfoServiceImpl implements ClassInfoService {
     }
 
     @Override
-    public void insertClassInfo(ClassInfo classInfo) {
+    public ResultBean insertClassInfo(ClassInfo classInfo) {
+        int count = classInfoDao.getClassInfoCountByName(classInfo.getClassName(), Status.IS_ENABLE.getStatus());
+        if (count == 1) {
+            return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,新增失败");
+        }
         classInfoDao.insertClassInfo(classInfo);
+        return new ResultBean();
     }
 
     @Override
@@ -44,6 +49,10 @@ public class ClassInfoServiceImpl implements ClassInfoService {
         AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentByClassId(classInfo.getClassId(), nowTime);
         if (appointmentInfo != null) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程在使用中,无法编辑.");
+        }
+        int countByName = classInfoDao.getClassInfoCountByName(classInfo.getClassName(), Status.IS_ENABLE.getStatus());
+        if (countByName == 1) {
+            return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,更新失败");
         }
         classInfo.setIsEnable(Status.IS_ENABLE.getStatus());
         int updateCount = classInfoDao.updateClassInfo(classInfo);
@@ -55,22 +64,17 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 
     @Override
     public ResultBean deleteClassInfo(int classId) {
-        ResultBean resultBean = new ResultBean();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constant.DATE_FORMAT2);
         String nowTime = simpleDateFormat.format(new Date());
         AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentByClassId(classId, nowTime);
         if (appointmentInfo != null) {
-            resultBean.setRtnMsg("此课程还在使用中,无法删除");
-            resultBean.setRtnCode(ResultBean.FAIL_CODE);
-            return resultBean;
+            return new ResultBean(ResultBean.FAIL_CODE, "课程在使用中,无法删除");
         }
         int deleteCount = classInfoDao.updateClassInfoEnable(classId, Status.NOT_ENABLE.getStatus());
         if (deleteCount == 1) {
-            return resultBean;
+            return new ResultBean();
         }
-        resultBean.setRtnMsg("删除失败");
-        resultBean.setRtnCode(ResultBean.FAIL_CODE);
-        return resultBean;
+        return new ResultBean(ResultBean.FAIL_CODE, "删除失败");
     }
 
     @Override
@@ -80,8 +84,4 @@ public class ClassInfoServiceImpl implements ClassInfoService {
         return new PageInfo<>(list);
     }
 
-    @Override
-    public int getClassInfoCountByName(String className) {
-        return classInfoDao.getClassInfoCountByName(className, Status.IS_ENABLE.getStatus());
-    }
 }
