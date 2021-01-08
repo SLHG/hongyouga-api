@@ -17,8 +17,10 @@ public class ClassInfo {
     private String createTime;
     //是否可用
     private int isEnable;
-    //课程类型
+    //课程类型编码
     private int classType;
+    //课程类型名称
+    private String classTypeName;
 
     public int getClassId() {
         return classId;
@@ -76,16 +78,25 @@ public class ClassInfo {
         this.createTime = createTime;
     }
 
+    public String getClassTypeName() {
+        return classTypeName;
+    }
+
+    public void setClassTypeName(String classTypeName) {
+        this.classTypeName = classTypeName;
+    }
+
     @Override
     public String toString() {
         return "ClassInfo{" +
-                "classId='" + classId + '\'' +
+                "classId=" + classId +
                 ", className='" + className + '\'' +
                 ", classFeatures='" + classFeatures + '\'' +
                 ", classIntroduction='" + classIntroduction + '\'' +
                 ", createTime='" + createTime + '\'' +
-                ", isEnable='" + isEnable + '\'' +
-                ", classType='" + classType + '\'' +
+                ", isEnable=" + isEnable +
+                ", classType=" + classType +
+                ", classTypeName=" + classTypeName +
                 '}';
     }
 }

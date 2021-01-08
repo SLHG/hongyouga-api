@@ -9,6 +9,7 @@ import com.cn.dao.classinfo.ClassTypeDao;
 import com.cn.service.classinfo.ClassTypeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ClassTypeServiceImpl implements ClassTypeService {
 
     @Override
     public ResultBean insertClassType(ClassType classType) {
-        int count = classTypeDao.getClassTypeCountByName(classType.getClassTypeName());
+        int count = classTypeDao.getClassTypeCountByName(classType);
         if (count == 1) {
             return new ResultBean(ResultBean.FAIL_CODE, "名称重复,新增失败");
         }
@@ -36,7 +37,10 @@ public class ClassTypeServiceImpl implements ClassTypeService {
 
     @Override
     public ResultBean updateClassType(ClassType classType) {
-        int countByName = classTypeDao.getClassTypeCountByName(classType.getClassTypeName());
+        if (StringUtils.isBlank(classType.getClassTypeName())) {
+            return new ResultBean(ResultBean.FAIL_CODE, "名称为空");
+        }
+        int countByName = classTypeDao.getClassTypeCountByName(classType);
         if (countByName == 1) {
             return new ResultBean(ResultBean.FAIL_CODE, "名称重复,更新失败");
         }
@@ -65,6 +69,11 @@ public class ClassTypeServiceImpl implements ClassTypeService {
         PageHelper.startPage(start, limit);
         List<ClassType> list = classTypeDao.getClassTypeList(classTypeName);
         return new PageInfo<>(list);
+    }
+
+    @Override
+    public List<ClassType> getAllClassTypeList() {
+        return classTypeDao.getAllClassTypeList();
     }
 
 }

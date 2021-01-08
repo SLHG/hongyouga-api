@@ -23,7 +23,7 @@
     <delete id="deleteClassType" parameterType="map">
         delete
         from class_type
-        where type_id = #{classTypeId}
+        where type_id = #{typeId}
         limit 1;
     </delete>
     <select id="getClassTypeList" resultMap="BaseResultMap" parameterType="map">
@@ -38,15 +38,22 @@
             </if>
         </where>
     </select>
-    <select id="getClassTypeCountByName" resultType="int" parameterType="map">
+    <select id="getClassTypeCountByName" resultType="int" parameterType="com.cn.beans.classinfo.ClassType">
         select count(type_id)
         from class_type
         <where>
-            class_type_name like CONCAT('%',
-            #{classTypeName},
-            '%'
-            )
+            class_type_name =
+            #{classTypeName}
+            <if test="typeId != null and typeId != ''">
+                and type_id &lt;&gt;
+                #{typeId}
+            </if>
         </where>
         limit 1
+    </select>
+
+    <select id="getAllClassTypeList" resultMap="BaseResultMap">
+        select type_id, class_type_name
+        from class_type
     </select>
 </mapper>

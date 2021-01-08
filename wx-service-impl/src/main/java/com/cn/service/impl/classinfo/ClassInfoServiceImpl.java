@@ -10,6 +10,7 @@ import com.cn.dao.classinfo.ClassInfoDao;
 import com.cn.service.classinfo.ClassInfoService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -34,7 +35,8 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 
     @Override
     public ResultBean insertClassInfo(ClassInfo classInfo) {
-        int count = classInfoDao.getClassInfoCountByName(classInfo.getClassName(), Status.IS_ENABLE.getStatus());
+        classInfo.setIsEnable(Status.IS_ENABLE.getStatus());
+        int count = classInfoDao.getClassInfoCountByName(classInfo);
         if (count == 1) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,新增失败");
         }
@@ -44,17 +46,20 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 
     @Override
     public ResultBean updateClassInfo(ClassInfo classInfo) {
+        if (StringUtils.isBlank(classInfo.getClassName())) {
+            return new ResultBean(ResultBean.FAIL_CODE, "名称为空");
+        }
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constant.DATE_FORMAT2);
         String nowTime = simpleDateFormat.format(new Date());
         AppointmentInfo appointmentInfo = appointmentInfoDao.getAppointmentByClassId(classInfo.getClassId(), nowTime);
         if (appointmentInfo != null) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程在使用中,无法编辑.");
         }
-        int countByName = classInfoDao.getClassInfoCountByName(classInfo.getClassName(), Status.IS_ENABLE.getStatus());
+        classInfo.setIsEnable(Status.IS_ENABLE.getStatus());
+        int countByName = classInfoDao.getClassInfoCountByName(classInfo);
         if (countByName == 1) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程名称重复,更新失败");
         }
-        classInfo.setIsEnable(Status.IS_ENABLE.getStatus());
         int updateCount = classInfoDao.updateClassInfo(classInfo);
         if (updateCount == 1) {
             return new ResultBean();

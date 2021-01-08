@@ -4,7 +4,8 @@
     <resultMap id="BaseResultMap" type="com.cn.beans.classinfo.ClassInfo">
         <result column="class_id" property="classId" jdbcType="INTEGER"/>
         <result column="class_name" property="className" jdbcType="VARCHAR"/>
-        <result column="class_type" property="classType" jdbcType="VARCHAR"/>
+        <result column="class_type" property="classType" jdbcType="INTEGER"/>
+        <result column="class_type_name" property="classTypeName" jdbcType="VARCHAR"/>
         <result column="class_features" property="classFeatures" jdbcType="VARCHAR"/>
         <result column="class_introduction" property="classIntroduction" jdbcType="VARCHAR"/>
     </resultMap>
@@ -16,8 +17,8 @@
         limit 1;
     </select>
     <insert id="insertClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
-        insert into class_info(class_name, class_type, class_introduction, class_features)
-        values (#{className}, #{classType}, #{classIntroduction}, #{classFeatures});
+        insert into class_info(class_name, class_type, class_introduction, class_features, is_enable)
+        values (#{className}, #{classType}, #{classIntroduction}, #{classFeatures}, #{isEnable});
     </insert>
     <update id="updateClassInfo" parameterType="com.cn.beans.classinfo.ClassInfo">
         update class_info
@@ -48,28 +49,29 @@
         limit 1;
     </update>
     <select id="getClassInfoList" resultMap="BaseResultMap" parameterType="map">
-        select class_id, class_name, class_type, class_introduction,class_features
-        from class_info
+        select a.class_id, a.class_name, a.class_type, a.class_introduction,a.class_features,b.class_type_name
+        from class_info a left join class_type b on a.class_type=b.type_id
         <where>
-            is_enable=#{isEnable}
+            a.is_enable=#{isEnable}
             <if test="className != null and className != ''">
-                and  class_name like CONCAT('%',
+                and  a.class_name like CONCAT('%',
                 #{className},
                 '%'
                 )
             </if>
         </where>
-        order by create_time desc
+        order by a.create_time desc
     </select>
-    <select id="getClassInfoCountByName" resultType="int" parameterType="map">
+    <select id="getClassInfoCountByName" resultType="int" parameterType="com.cn.beans.classinfo.ClassInfo">
         select count(class_id)
         from class_info
         <where>
             is_enable=#{isEnable}
-            and class_name like CONCAT('%',
-            #{className},
-            '%'
-            )
+            and class_name =
+            #{className}
+            <if test="classId !=null and classId != ''">
+                and class_id &lt;&gt; classId
+            </if>
         </where>
         limit 1
     </select>

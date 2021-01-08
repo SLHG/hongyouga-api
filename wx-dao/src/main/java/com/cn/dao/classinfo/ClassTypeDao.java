@@ -13,9 +13,11 @@ public interface ClassTypeDao {
 
     int updateClassType(ClassType classInfo);
 
-    int deleteClassType(@Param("classTypeId") int classTypeId);
+    int deleteClassType(@Param("typeId") int classTypeId);
 
     List<ClassType> getClassTypeList(@Param("classTypeName") String classTypeName);
 
-    int getClassTypeCountByName(@Param("classTypeName") String classTypeName);
+    int getClassTypeCountByName(ClassType classInfo);
+
+    List<ClassType> getAllClassTypeList();
 }

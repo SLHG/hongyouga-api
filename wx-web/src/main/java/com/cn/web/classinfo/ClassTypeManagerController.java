@@ -7,6 +7,8 @@ import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/manager/class")
 public class ClassTypeManagerController {
@@ -39,5 +41,11 @@ public class ClassTypeManagerController {
     public ResultBean getClassTypeList(@RequestParam(defaultValue = "1") int start, @RequestParam(defaultValue = "10") int limit, String classTypeName) {
         PageInfo<ClassType> classPageInfo = classTypeService.getClassTypeList(start, limit, classTypeName);
         return new ResultBean(classPageInfo);
+    }
+
+    @GetMapping("/getAllClassTypeList")
+    public ResultBean getAllClassTypeList() {
+        List<ClassType> list = classTypeService.getAllClassTypeList();
+        return new ResultBean(list);
     }
 }
