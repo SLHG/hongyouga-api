@@ -28,18 +28,16 @@ public class ClassPackageTypeServiceImpl implements ClassPackageTypeService {
 
     @Override
     public void insertClassPackageType(ClassPackageType classPackageType) {
-        classPackageType.setIsEnable(Status.IS_ENABLE.getStatus());
         classPackageType.setStatus(Status.NOT_ENABLE.getStatus());
         classPackageTypeDao.insertClassPackageType(classPackageType);
     }
 
     @Override
     public ResultBean updateClassPackageType(ClassPackageType classPackageType) {
-        ClientClassPackageInfo clientClassPackageInfo = clientClassPackageInfoDao.getClientClassPackageInfoByPackageId(classPackageType.getPackageId());
+        ClientClassPackageInfo clientClassPackageInfo = clientClassPackageInfoDao.getClientClassPackageInfoByPackageId(classPackageType.getPackageId(), Status.IS_ENABLE.getStatus());
         if (clientClassPackageInfo != null) {
             return new ResultBean(ResultBean.FAIL_CODE, "套餐在使用中,无法编辑");
         }
-        classPackageType.setIsEnable(Status.IS_ENABLE.getStatus());
         int updateCount = classPackageTypeDao.updateClassPackageType(classPackageType);
         if (updateCount == 0) {
             return new ResultBean(ResultBean.FAIL_CODE, "更新失败");
@@ -49,7 +47,7 @@ public class ClassPackageTypeServiceImpl implements ClassPackageTypeService {
 
     @Override
     public ResultBean deleteClassPackageType(int packageId) {
-        ClientClassPackageInfo clientClassPackageInfo = clientClassPackageInfoDao.getClientClassPackageInfoByPackageId(packageId);
+        ClientClassPackageInfo clientClassPackageInfo = clientClassPackageInfoDao.getClientClassPackageInfoByPackageId(packageId, Status.IS_ENABLE.getStatus());
         if (clientClassPackageInfo != null) {
             return new ResultBean(ResultBean.FAIL_CODE, "套餐在使用中,无法删除");
         }
@@ -63,7 +61,7 @@ public class ClassPackageTypeServiceImpl implements ClassPackageTypeService {
     @Override
     public PageInfo<ClassPackageType> getClassPackageTypeList(int start, int limit, String packageName) {
         PageHelper.startPage(start, limit);
-        List<ClassPackageType> list = classPackageTypeDao.getClassPackageTypeList(packageName, Status.IS_ENABLE.getStatus());
+        List<ClassPackageType> list = classPackageTypeDao.getClassPackageTypeList(packageName);
         return new PageInfo<>(list);
     }
 }

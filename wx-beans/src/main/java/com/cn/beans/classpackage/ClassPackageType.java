@@ -13,9 +13,9 @@ public class ClassPackageType {
     //可用次数
     private int enableNum;
     //可用课程类型.例如:1-大课,2-私教
-    private String classType;
-    //套餐是否可用 0-删除,1-可用
-    private int isEnable;
+    private int classType;
+    //课程类型名称
+    private String classTypeName;
     //套餐状态 0-暂停,1-启用
     private int status;
 
@@ -51,20 +51,12 @@ public class ClassPackageType {
         this.enableNum = enableNum;
     }
 
-    public String getClassType() {
+    public int getClassType() {
         return classType;
     }
 
-    public void setClassType(String classType) {
+    public void setClassType(int classType) {
         this.classType = classType;
-    }
-
-    public int getIsEnable() {
-        return isEnable;
-    }
-
-    public void setIsEnable(int isEnable) {
-        this.isEnable = isEnable;
     }
 
     public int getStatus() {
@@ -75,6 +67,14 @@ public class ClassPackageType {
         this.status = status;
     }
 
+    public String getClassTypeName() {
+        return classTypeName;
+    }
+
+    public void setClassTypeName(String classTypeName) {
+        this.classTypeName = classTypeName;
+    }
+
     @Override
     public String toString() {
         return "ClassPackageType{" +
@@ -83,7 +83,7 @@ public class ClassPackageType {
                 ", enableTime=" + enableTime +
                 ", enableNum=" + enableNum +
                 ", classType='" + classType + '\'' +
-                ", isEnable=" + isEnable +
+                ", classTypeName='" + classTypeName + '\'' +
                 ", status=" + status +
                 '}';
     }

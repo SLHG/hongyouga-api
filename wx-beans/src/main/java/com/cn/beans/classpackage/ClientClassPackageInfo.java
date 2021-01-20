@@ -23,6 +23,8 @@ public class ClientClassPackageInfo {
     private String createTime;
     //套餐状态
     private String isEnable;
+    //套餐状态 0-暂停,1-启用
+    private int status;
 
     public String getOpenId() {
         return openId;
@@ -96,6 +98,14 @@ public class ClientClassPackageInfo {
         this.isEnable = isEnable;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "ClientClassPackageInfo{" +
@@ -108,6 +118,7 @@ public class ClientClassPackageInfo {
                 ", classType='" + classType + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", isEnable='" + isEnable + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

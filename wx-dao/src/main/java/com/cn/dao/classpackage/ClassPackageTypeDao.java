@@ -12,7 +12,7 @@ public interface ClassPackageTypeDao {
 
     int updateClassPackageType(ClassPackageType classPackageType);
 
-    List<ClassPackageType> getClassPackageTypeList(@Param("packageName") String packageName, @Param("isEnable") int isEnable);
+    List<ClassPackageType> getClassPackageTypeList(@Param("packageName") String packageName);
 
-    int deleteClassPackageType(@Param("packageId") int packageId, @Param("isEnable") int isEnable);
+    int deleteClassPackageType(@Param("packageId") int packageId, @Param("status") int status);
 }

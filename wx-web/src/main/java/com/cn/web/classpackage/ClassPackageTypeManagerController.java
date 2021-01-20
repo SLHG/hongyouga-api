@@ -27,7 +27,7 @@ public class ClassPackageTypeManagerController {
         if (StringUtils.isBlank(classPackageType.getPackageName())) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程名称为空");
         }
-        if (StringUtils.isBlank(classPackageType.getClassType())) {
+        if (classPackageType.getClassType() < 0) {
             return new ResultBean(ResultBean.FAIL_CODE, "课程类型为空");
         }
         if (classPackageType.getEnableTime() <= 0) {

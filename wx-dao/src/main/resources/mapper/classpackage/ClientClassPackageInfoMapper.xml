@@ -9,17 +9,13 @@
         <result column="class_type" property="classType" jdbcType="VARCHAR"/>
         <result column="is_enable" property="isEnable" jdbcType="INTEGER"/>
     </resultMap>
-    <select id="getClientClassPackageInfoByPackageId" resultMap="BaseResultMap" parameterType="string">
-        select package_id, package_name, class_type, enable_time, enable_num, status
-        from class_package_type
+    <select id="getClientClassPackageInfoByPackageId" resultMap="BaseResultMap" parameterType="map">
+        select package_id
+        from client_class_package_info
         <where>
             is_enable = #{isEnable}
-            <if test="package_name != null and package_name != ''">
-                and  package_name like CONCAT('%',
-                #{packageName},
-                '%'
-                )
-            </if>
+            and package_id=#{packageId}
         </where>
+        limit 1
     </select>
 </mapper>
