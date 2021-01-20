@@ -70,7 +70,8 @@
             and class_name =
             #{className}
             <if test="classId !=null and classId != ''">
-                and class_id &lt;&gt; classId
+                and class_id &lt;&gt;
+                #{classId}
             </if>
         </where>
         limit 1
